@@ -1,0 +1,42 @@
+.THIS.pagewrapper{
+	max-width: 3600px;
+    margin: 18px auto;
+}
+.THIS .slds-card__header{
+    background: #f4f6f9;
+    padding-bottom: 0.75rem;
+}
+.THIS .slds-card__header span{
+   text-align:center;
+    width:100%;
+}
+.THIS .slds-card__header-title{
+    font-size:25px;
+    text-align:center;
+}
+.THIS .mt-9{
+	margin-top:9px;
+}
+.THIS #tableId_filter input{
+    width: 200px;
+}
+.THIS #tableId_length select{
+ padding-left: var(--lwc-spacingXSmall,0.5rem);
+    padding-right: var(--lwc-spacingLarge,1.5rem);
+    height: calc(var(--lwc-heightInput,1.875rem) + (1px * 2));
+    border: var(--lwc-borderWidthThin,1px) solid var(--sds-c-select-color-border, var(--lwc-colorBorderInput,rgb(217, 219, 221)));
+    border-radius: var(--sds-c-select-radius-border, var(--lwc-borderRadiusMedium,0.25rem));
+    background-color: var(--sds-c-select-color-background, var(--lwc-colorBackgroundInput,rgb(255, 255, 255)));
+    color: var(--sds-c-select-text-color);
+    box-shadow: var(--sds-c-select-shadow);
+    transition: border var(--lwc-durationQuickly,0.1s) linear,background-color var(--lwc-durationQuickly,0.1s) linear;  
+}
+
+.THIS.slds-spinner_container {  
+  z-index: 10000;
+  position: fixed;   
+}
+
+.THIS.slds-truncate{
+  max-width:50%; 
+ }

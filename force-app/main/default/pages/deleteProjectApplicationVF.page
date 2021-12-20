@@ -1,0 +1,14 @@
+<apex:page standardController="Application_Survey_Form__c">
+    <apex:includeLightning />    
+    <div id="LightningComponentid" />   
+    <script>
+        $Lightning.use("c:deleteProjectApplicationApp", function() {
+            $Lightning.createComponent("c:deleteProjectApplication",
+            { 
+            },
+            "LightningComponentid",
+            function(cmp) {
+            });
+        });
+    </script>
+</apex:page>

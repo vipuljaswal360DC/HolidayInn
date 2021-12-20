@@ -1,0 +1,252 @@
+<aura:component controller="UniqueTeamMemberDisplayCls" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <!--aura init handler , call js "loadData" function on component load, and display contact data on table-->  
+    <ltng:require styles="{! $Resource.datatable + '/DataTables-1.10.16/media/css/jquery.dataTables.min.css'}" 
+                  scripts="{!join(',', 
+                           $Resource.jquery224 , 
+                           $Resource.datatable + '/DataTables-1.10.16/media/js/jquery.dataTables.min.js')
+                           }" afterScriptsLoaded="{!c.scriptsLoaded}"/>
+    
+   
+    <aura:handler name="init" value="{!this}" action="{!c.loadData}"/>
+    
+    
+    <!--Declare Attributes-->
+    <aura:attribute name="show" type="Boolean" default="false" />  
+    <aura:attribute name="searchKeyword" type="String" description="search input"/>
+    <aura:attribute name="searchKeywordCA" type="String" description="search input"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/> 
+    <aura:attribute name="wrapperList" type="UniqueTeamMemberDisplayCls.wrapperClass[]"/>
+    <aura:attribute name="UniqueMMList" type="List[]"/>  
+    <aura:attribute name="columns" type="List[]"/>
+    <aura:attribute name="columnsParticipants" type="List[]"/> 
+    <aura:attribute name="sortedBy" type="String"/>
+    <aura:attribute name="sortedDirection" type="String"/>
+    <aura:attribute name="selectedValues" type="List" default="Name"/>
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <aura:attribute name="AnnualPartList" type="Participation__c[]"/>
+    <aura:attribute name="showdiv" type="boolean" default="false" />
+    <aura:attribute name="conId" type="string[]" />
+    <aura:attribute name="ContactList" type="Contact[]"/>
+    <aura:attribute name="PageNumber" type="integer" default="1"/>
+    <aura:attribute name="TotalPages" type="integer" default="0"/>
+    <aura:attribute name="TotalRecords" type="integer" default="0"/>
+    <aura:attribute name="RecordStart" type="integer" default="0"/>
+    <aura:attribute name="RecordEnd" type="integer" default="0"/>
+    <aura:attribute name="arrowDirection" type="string" default="arrowup" description="Use for change arrow sign direction on header based on click"/>
+    <aura:attribute name="isAsc" type="boolean" default="true" description="boolean flag for pass sorting condition to apex class"/> 
+    <aura:attribute name="selectedTabsoft" type="string" default="firstName" description="Use for show/hide arraow sign on header based on conditions"/>
+    <aura:handler name="change" value="{!v.show}" action="{!c.spinnerDisplayHandler}"/>
+    <aura:attribute name="ShowTableForFilter" type="boolean" default="false"/>
+    <aura:attribute name="ShowTableByDefault" type="boolean" default="true"/>
+    
+    <!-- SHOW LOADING SPINNER--> 
+    <lightning:spinner variant="brand" size="large" aura:id="Id_spinner" class="slds-hide" />
+    
+    <!-- create 2 aura handler with waiting and donewaiting events-->
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+  <!--create a component attributs -->
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    <!--loading spinner start... style=Brand Medium (blue dots)-->
+<aura:if isTrue="{!v.Spinner}">
+    <div aura:id="spinnerId" class="slds-spinner_container">
+       <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+         <span class="slds-assistive-text">Loading</span>
+         <div class="slds-spinner__dot-a"></div>
+         <div class="slds-spinner__dot-b"></div>
+       </div>
+    </div>
+</aura:if>
+  <!-- Loading spinner end-->  
+    
+    <div class="pagewrapper">
+        <div class="slds-card">
+            <div class="slds-card__header slds-grid">
+                <div class="slds-no-flex">
+                    <button id="btnExportRefresh" class="slds-button slds-button--brand"  onclick="{!c.refreshViewPage}">Refresh</button>
+                </div>
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    
+                    <div class="slds-media__body">
+                        <h1 class="slds-card__header-title">
+                            
+                            <span> Alumni Team Members Report</span>
+                            
+                        </h1>
+                    </div>
+                    <div class="slds-no-flex">
+                        <button id="btnExport" class="slds-button slds-button--brand" onclick="{!c.downloadCsv}">Export Report</button>
+                    </div>
+                </header>
+            </div>
+            <div class="slds-card__body slds-card__body_inner">
+                
+                <div aria-labelledby="newSearchForm" class="slds-grid">
+                    <!-- BOXED AREA -->
+                    <fieldset class="slds-box" style="width:100%;">
+                        
+                        <label id="newSearchForm" class="slds-text-heading--small
+                                                         slds-p-vertical--medium">
+                            
+                        </label>
+                        
+                        <form class="slds-form--stacked">
+                            <div class="">
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-5 slds-m-around_xx-small mt-9">
+                                        
+                                        <lightning:select aura:id="selectfilter" name="select1" label="" onchange="{! c.onChange }" required="false" >
+                                            <option value="Application Year">Application Year</option>
+                                        </lightning:select>        
+                                    </div>
+                                    
+                                    
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-5 slds-m-around_xx-small">
+                                        
+                                        <lightning:input value="{!v.searchKeyword}"
+                                                         required="false"
+                                                         placeholder=""
+                                                         aura:id="searchField"
+                                                         label="Enter Value"
+                                                         onchange="{!c.onChangeForInput}"/>
+                                    </div>
+                                    
+                                    
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-5 slds-m-around_xx-small mt-9">                       
+                                        <lightning:select aura:id="selectfilterProj" name="select1" label="" onchange="{! c.onChange }" required="false" >
+                                            <option value="Company Affiliation">Company Affiliation</option>
+                                        </lightning:select>
+                                    </div>
+                                    
+                                    
+                                    
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-5 slds-m-around_xx-small"> 
+                                        <lightning:input value="{!v.searchKeywordCA}"
+                                                         required="false"
+                                                         placeholder=""
+                                                         aura:id="searchFieldProStatus"
+                                                         label="Enter Value"
+                                                         onchange="{!c.onChangeForInput}"/>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-5 slds-m-top_small" style="width:15%;">               
+                                        <lightning:button onclick="{!c.Search}"
+                                                          class="slds-m-top--medium"
+                                                          variant="brand"
+                                                          label="Filter"
+                                                          iconName="utility:filterList"/>
+                                    </div>   
+                                    
+                                </div>
+                            </div>  
+                        </form>
+                    </fieldset>
+                </div>
+                <br/>
+                <aura:if  isTrue="{!v.ShowTableByDefault}" >      
+                    <table id="tableId" class="slds-table slds-table--bordered slds-table--cell-buffer">
+                        <thead> 
+                            <tr class="slds-text-title_caps">
+                                <th scope="col">Team Member Name</th>
+                                
+                                <th>TM Home Office Location</th>
+                                <!--<th scope="col" class="slds-truncate">Person ID</th>-->
+                                <!--<th>Account Name</th>-->
+                                <th scope="col" class="slds-truncate">Company Affiliation</th>
+                                <th scope="col" class="slds-truncate">#Total Applications</th>
+                                <th scope="col" class="slds-truncate">#Total Participations</th>
+                                <th scope="col" class="slds-truncate">
+                                    List[Year, #Application]
+                                </th>
+                                <th scope="col" class="slds-truncate">
+                                    List [App Year, # Participation]
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.UniqueMMList}" var="UniqueMM">
+                                
+                                <tr>
+                                    <td scope="row" class="slds-truncate"> <a href="{!'/one/one.app?#/sObject/'+ UniqueMM.Con.Id + '/view'}" target="_blank">{!UniqueMM.Con.Name}</a></td>
+                                    <td>{!UniqueMM.Con.Home_Office__c}</td>
+                                    <!--<td scope="row" class="slds-truncate">{!UniqueMM.Con.Id}</td>-->
+                                    <!--<td>{!UniqueMM.Con.Account_Name__c}</td>-->
+                                    <td scope="row" class="slds-truncate">{!UniqueMM.Con.Company_Affiliation__c}</td>
+                                    <td scope="row" class="slds-truncate">{!UniqueMM.ProjCount}</td>
+                                    <td scope="row" class="slds-truncate">{!UniqueMM.APCount}</td>
+                                    <td  scope="row" class="slds-truncate">{!UniqueMM.JSONInfoForAPP}
+                                        
+                                        <!--<aura:iteration items="{!UniqueMM.JSONInfoForAPP}" var="TAVar" indexVar="key1">
+                                            
+                                            <c:mapEntryChild map="{!v.fullMap}" key="{!TAVar}" />
+                                        </aura:iteration>-->
+                                    </td>
+                                    <td  scope="row" class="slds-truncate">
+                                        <aura:iteration items="{!UniqueMM.AnnualParticipationList}" var="APVar">
+                                            <td scope="row" class="slds-truncate">[{!APVar.Participation_Year__c},{!APVar.Counter__c}]</td>
+                                        </aura:iteration>
+                                    </td>
+                                </tr>
+                                
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                </aura:if> 
+                <aura:if  isTrue="{!v.ShowTableForFilter}" >      
+                    <table id="tableIdFilter" class="slds-table slds-table--bordered slds-table--cell-buffer">
+                        <thead> 
+                            <tr class="slds-text-title_caps">
+                                <th scope="col">Team Member Name</th>
+                                
+                                <th>TM Home Office Location</th>
+                                <!--<th scope="col" class="slds-truncate">Person ID</th>-->
+                                <!--<th>Account Name</th>-->
+                                <th scope="col" class="slds-truncate">Company Affiliation</th>
+                                <th scope="col" class="slds-truncate">#Total Applications</th>
+                                <th scope="col" class="slds-truncate">#Total Participations</th>
+                                <th scope="col" class="slds-truncate">
+                                    List[Year, #Application]
+                                </th>
+                                <th scope="col" class="slds-truncate">
+                                    List [App Year, # Participation]
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.UniqueMMList}" var="UniqueMM">
+                                
+                                <tr>
+                                    <td scope="row" class="slds-truncate"> <a href="{!'/one/one.app?#/sObject/'+ UniqueMM.Con.Id + '/view'}" target="_blank">{!UniqueMM.Con.Name}</a></td>
+                                    <td>{!UniqueMM.Con.Home_Office__c}</td>
+                                    <!--<td scope="row" class="slds-truncate">{!UniqueMM.Con.Id}</td>-->
+                                    <!--<td>{!UniqueMM.Con.Account_Name__c}</td>-->
+                                    <td scope="row" class="slds-truncate">{!UniqueMM.Con.Company_Affiliation__c}</td>
+                                    <td scope="row" class="slds-truncate">{!UniqueMM.ProjCount}</td>
+                                    <td scope="row" class="slds-truncate">{!UniqueMM.APCount}</td>
+                                    <td  scope="row" class="slds-truncate">{!UniqueMM.JSONInfoForAPP}
+                                        
+                                        <!--<aura:iteration items="{!UniqueMM.JSONInfoForAPP}" var="TAVar" indexVar="key1">
+                                            
+                                            <c:mapEntryChild map="{!v.fullMap}" key="{!TAVar}" />
+                                        </aura:iteration>-->
+                                    </td>
+                                    <td  scope="row" class="slds-truncate">
+                                        <aura:iteration items="{!UniqueMM.AnnualParticipationList}" var="APVar">
+                                            <td scope="row" class="slds-truncate">[{!APVar.Participation_Year__c},{!APVar.Counter__c}]</td>
+                                        </aura:iteration>
+                                    </td>
+                                </tr>
+                                
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                </aura:if>    
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    
+</aura:component>

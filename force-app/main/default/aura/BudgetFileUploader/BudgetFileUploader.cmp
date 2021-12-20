@@ -1,0 +1,27 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >  
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>  
+    <aura:attribute name="files" type="ContentDocument[]"/>  
+    <aura:attribute name="recordId" type="string"/>  
+    <aura:attribute name="accept" type="List" />  
+    <aura:attribute name="multiple" type="Boolean" default="true"/>      
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    <div class="slds"> 
+        
+        <lightning:card>
+            <aura:set attribute="title">
+                <lightning:icon iconName="utility:upload" size="small"></lightning:icon>
+                &nbsp; &nbsp;Upload Budget File
+            </aura:set>
+            <lightning:notificationsLibrary aura:id="notifLib"/>
+            <div class="contentbox">  
+                <div class="slds-grid">  
+                    <div style="width:100%">  
+                        <center>
+                            <lightning:fileUpload label="" multiple="{!v.multiple}" accept="{!v.accept}" recordId="{!v.recordId}" onuploadfinished="{!c.UploadFinished}" />  
+                        </center>
+                    </div>  
+                </div><br/> 
+            </div> 
+        </lightning:card>        
+    </div>  
+</aura:component>

@@ -1,0 +1,41 @@
+<aura:component controller="SubmitApplicationController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+	<aura:handler name="init" value="{!this}" action="{!c.submitApp}"/>
+    <aura:attribute name="smsg" type="Boolean" default="false"/>
+    <aura:attribute name="emsg" type="Boolean" default="false"/>
+    <aura:attribute name="NISubmissionMsg" type="Boolean" default="false"/>
+    <aura:attribute name="validationError" type="Boolean" default="false"/>
+    <aura:attribute name="validationFields" type="String" default="false"/>
+    
+    <aura:if isTrue="{!v.smsg}">
+        <lightning:card title="Submit Application Successful" iconName="utility:success">
+            <p class="slds-p-horizontal_small">
+           		Your Project Application has been submitted successfully.
+            </p>
+    	</lightning:card>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.NISubmissionMsg}">
+        <lightning:card title="Project Application already Submitted" iconName="utility:warning">
+            <p class="slds-p-horizontal_small">
+               Your application is already Submitted. Please contact <a href="mailto: info@ambassadorsforgood.org"> info@ambassadorsforgood.org</a> if you need further assistance with your application.
+            </p>
+    	</lightning:card>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.emsg}">
+        <lightning:card title="Error" iconName="utility:close">
+            <p class="slds-p-horizontal_small">
+				Issue in Submitting the Project Application.
+            </p>
+    	</lightning:card>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.NISubmissionMsg}">
+        <lightning:card title="Project Application Validation Error" iconName="utility:warning">
+            <p class="slds-p-horizontal_small">
+                Your application is missing some data. Please enter values under following fields.<br/>
+                {!v.validationFields}
+            </p>
+    	</lightning:card>
+    </aura:if>
+</aura:component>

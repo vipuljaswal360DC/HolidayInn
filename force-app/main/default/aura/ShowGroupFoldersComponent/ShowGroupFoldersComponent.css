@@ -1,0 +1,55 @@
+.THIS .FolderSection{
+    border: 1px solid rgb(72, 85, 86);
+    border-radius: .25rem;
+}
+.THIS .FilesLinksSection{
+    border: 1px solid rgb(72, 85, 86);
+    border-radius: .25rem;
+}
+.THIS .HeaderDiv{
+    border-bottom: 1px solid rgb(72, 85, 86);
+    padding: 1rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+}
+.THIS table td{
+    border-bottom: 1px solid rgb(72, 85, 86);
+    padding :0.5rem;
+}
+.THIS .tableheaderCss{
+    /*font-size: 1rem;*/
+    font-weight: bold;
+}
+.THIS .BackBtnDivCss{
+    text-align: right;
+}
+.THIS .UploadFileCss .slds-form-element__label{
+    display: none;
+}
+.THIS .UploadFileCss .slds-file-selector__text{
+    display: none;
+}
+.THIS .UploadFileCss .slds-file-selector__dropzone{
+    border: none;
+}
+.THIS .UploadFileCss .slds-form-element{
+    display: inline-block;
+}
+.THIS .UploadFileCss .slds-form-element__control{
+    display: inline-block;
+}
+.THIS .DeleteBtnCss{
+    vertical-align: unset;
+}
+.THIS .BackBtnCss{
+    vertical-align: unset;
+}
+.THIS .DeleteTDCss{
+    text-align: right;
+}
+.THIS .tableCss{
+    table-layout: fixed;
+}
+.THIS .tableCss td{
+    overflow-wrap: break-word;
+}

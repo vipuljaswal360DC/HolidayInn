@@ -1,0 +1,452 @@
+<template>
+    <div class="main-container slds-grid slds-grid_vertical slds-gutters">
+        <b>
+            <div class="slds-box slds-box slds-box_xx-small slds-theme_shade slds-text-heading_large slds-text-align_center"
+                style="color:#E45620">Registration Form</div>
+        </b><br />
+        <!--Check for Work Primary Email-->
+        <template if:true={isShowWorkEmail}>
+            <div class="slds-col">
+                <div class="slds-form-element slds-input-has-icon">
+                    <strong><label for="Email" style="font:size 500px;">Work Primary Email</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon">
+                        <lightning-icon class="input-icon" icon-name="utility:email"
+                            alternative-text="Work Primary Email" size="xx-small"></lightning-icon>
+                        <input type="text" data-id="email" name="email" placeholder="Email"
+                            class="slds-input input-element" value={email} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+            </div>
+            <div class="slds-m-top_small slds-m-bottom_medium slds-align_absolute-center">
+                <lightning-button variant="brand" label="Look up Email"
+                    class="login-button slds-button slds-m-left_x-small" onclick={checkEmail}>Look up Email
+                </lightning-button>
+            </div>
+        </template>
+
+        <!-- When Email found -->
+        <template if:true={isShowContactInfo}>
+            <!--Organization Name>
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Organization Name" style="font:size 500px;">Organization Name</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left tooltip">
+                        <lightning-icon class="input-icon" icon-name="utility:company"
+                            alternative-text="Organization Name" size="xx-small"></lightning-icon>
+                        <input type="text" data-id="inputCompanyName" name="companynamecf"
+                            placeholder="Organization Name" class="slds-input input-element" value={companyNameCF}
+                            onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+            </div-->
+
+            <!--First Name-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="First Name" style="font:size 500px;">First Name</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:user" alternative-text="First Name"
+                            size="xx-small"></lightning-icon>
+                        <input type="text" data-id="inputFirstName" name="firstnamecf" placeholder="First Name"
+                            class="slds-input input-element" value={FirstNameCF} onchange={handleFieldChanges}
+                            required />
+                    </div>
+                </div>
+            </div>
+
+            <!--Surname-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Last Name" style="font:size 500px;">Surname</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:user" alternative-text="Surname"
+                            size="xx-small"></lightning-icon>
+                        <input type="text" data-id="inputSurName" name="surnamecf" placeholder="Surname"
+                            class="slds-input input-element" value={SurNameCF} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+            </div>
+
+            <!--Job Title-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Job Title" style="font:size 500px;">Job Title</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:user" alternative-text="Job Title"
+                            size="xx-small"></lightning-icon>
+                        <input type="text" data-id="inputJobTitle" name="jobTitlecf" placeholder="Job Title"
+                            class="slds-input input-element" value={JobTitleCF} onchange={handleFieldChanges}
+                            required />
+                    </div>
+                </div>
+            </div>
+
+            <!--Work Email-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Email" style="font:size 500px;">Work Email</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left"
+                        onmouseover={handleEmailHover}>
+                        <lightning-icon class="input-icon" icon-name="utility:email" alternative-text="Work Email"
+                            size="xx-small"></lightning-icon>
+                        <input type="text" data-id="inputEmail" name="workemailcf" placeholder="Work Email"
+                            class="slds-input input-element" value={WorkEmailCF} onkeyup={handleFieldChanges}
+                            pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" required />
+                    </div>
+                </div>
+            </div>
+
+            <!--Home Office City-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Last Name" style="font:size 500px;">Home Office City</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:agent_home"
+                            alternative-text="Home Office City" size="xx-small"></lightning-icon>
+                        <input type="text" data-id="inputHomeOfficeCity" name="homeofficecitycf"
+                            placeholder="Home Office City" class="slds-input input-element" value={MaillingCityCF}
+                            onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+            </div>
+
+            <!--Preferred Language-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="preferredLanguage" style="font:size 500px;">Preferred Language</label></strong>
+                    <lightning-combobox name="preferredLanguageCF" value={preferredLanguageCF}
+                        placeholder="Select Preferred Language" options={preferredLanguageOptions}
+                        onchange={handleFieldChanges}>
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <!--Home Office Country-->
+            <div class="slds-col">
+                <div class="slds-form-element slds-form-element__control">
+                    <strong><label for="Home Office Country" style="font:size 500px;">Home Office
+                            Country</label></strong>
+                    <lightning-combobox name="homeOfficeCountrycf" value={HomeOfficeCountryCF}
+                        placeholder="Select Home Office Country" options={options} onchange={handleFieldChanges}>
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <!--Company Affiliation-->
+            <div class="slds-col">
+                <div class="slds-form-element slds-form-element__control">
+                    <strong><label for="Home Office Country" style="font:size 500px;">Company
+                            Affiliation</label></strong>
+                    <lightning-combobox name="CompanyAffiliationcf" value={CompanyAffiliationCF}
+                        placeholder="Select Company Affiliation" options={CAOptions} onchange={handleFieldChanges}>
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <!-- Business Unit for Anglo American-->
+            <template if:true={isAngloAmericanCF}>
+                <div class="slds-col">
+                    <div class="slds-form-element slds-form-element__control">
+                        <strong><label style="font:size 500px;">Business Unit</label></strong>
+                        <lightning-combobox name="BusinessUnitAAcf" value={BusinessUnitAACF}
+                            placeholder="Select  Business Unit" options={BUAAOptions} onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Business Unit for DeBeers-->
+            <template if:true={isDeBeersCF}>
+                <div class="slds-col">
+                    <div class="slds-form-element">
+                        <strong><label for="Home Office Country" style="font:size 500px;">Business Unit</label></strong>
+                        <lightning-combobox name="BusinessUnitDBcf" value={BusinessUnitDBCF}
+                            placeholder="Select  Business Unit" options={BUDBOptions} onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+
+            </template>
+            <!--Selected Other Business Unit-->
+            <template if:true={otherSelectedCF}>
+                <div class="slds-col">
+                    <span>
+                        <strong><label for="Home Office Country" style="font:size 500px;">Other Business
+                                Unit</label></strong>
+                        <lightning-input name="otherBusinessUnitcf" value={otherBusinessUnitCF}
+                            onchange={handleFieldChanges}>
+                        </lightning-input>
+                    </span>
+                </div>
+            </template>
+            <!--UserName-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Username" style="font:size 500px;">Username</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left tooltip">
+                        <lightning-icon class="input-icon" icon-name="utility:user" alternative-text="Username"
+                            size="xx-small"></lightning-icon>
+                        <input type="text" data-id="inputUsername" name="usernamecf" placeholder="Username"
+                            class="slds-input input-element" value={WorkEmailCF} onchange={handleFieldChanges}
+                            required />
+                    </div>
+                </div>
+            </div>
+
+            <!--Password-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Password" style="font:size 500px;">Password</label></strong>
+                    <lightning-helptext
+                        content="Password must be Minimum eight characters, at least one letter, one number and one special character.">
+                    </lightning-helptext>
+                    <div class="slds-form-element__control slds-input-has-icon">
+                        <lightning-icon class="input-icon" icon-name="utility:lock" alternative-text="Password"
+                            size="xx-small"></lightning-icon>
+                        <input type="password" data-id="inputPassword" name="passwordcf" placeholder="Create Password"
+                            class="slds-input input-element" value={PasswordCF} onchange={handleFieldChanges}
+                            pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" required />
+                    </div>
+                </div>
+            </div>
+
+            <!--Confirm Password-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Confirm Password" style="font:size 500px;">Confirm Password</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left tooltip">
+                        <lightning-icon class="input-icon" icon-name="utility:lock" alternative-text="confirm Password"
+                            size="xx-small"></lightning-icon>
+                        <input type="password" data-id="inputConfirmPassword" name="confirmpasswordcf"
+                            placeholder="Confirm Password" class="slds-input input-element" value={confirmPasswordCF}
+                            onchange={handleFieldChanges}
+                            pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" required />
+                    </div>
+                </div>
+            </div>
+            <div class="slds-align_absolute-center slds-p-top_small">
+                <lightning-button name="Save" label="Save" onclick={saveCFRecords}></lightning-button>
+            </div>
+        </template>
+
+        <!--            When Email not found             -->
+        <template if:true={noContactExists}>
+
+            <!--Organization Name>
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Organization Name" style="font:size 500px;">Organization Name</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left tooltip">
+                        <lightning-icon class="input-icon" icon-name="utility:company"
+                            alternative-text="Organization Name" size="xx-small"></lightning-icon>
+                        <input type="text" data-id="inputCompanyName" name="companyname" placeholder="Organization Name"
+                            class="slds-input input-element" value={companyName} onchange={handleFieldChanges}
+                            required />
+                    </div>
+                </div>
+            </div-->
+
+            <!--First Name-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="First Name" style="font:size 500px;">First Name</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:user" alternative-text="First Name"
+                            size="xx-small"></lightning-icon>
+                        <input type="text" data-id="inputFirstName" name="firstname" placeholder="First Name"
+                            class="slds-input input-element" value={FirstName} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+            </div>
+            <!--Surname-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Last Name" style="font:size 500px;">Surname</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:user" alternative-text="Surname"
+                            size="xx-small"></lightning-icon>
+                        <input type="text" data-id="inputSurName" name="surname" placeholder="Surname"
+                            class="slds-input input-element" value={SurName} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+            </div>
+            <!--Job Title-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Job Title" style="font:size 500px;">Job Title</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:user" alternative-text="Job Title"
+                            size="xx-small"></lightning-icon>
+                        <input type="text" data-id="inputJobTitle" name="jobTitle" placeholder="Job Title"
+                            class="slds-input input-element" value={JobTitle} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+            </div>
+            <!--Work Email-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Email" style="font:size 500px;">Work Email</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left"
+                        onmouseover={handleEmailHover}>
+                        <lightning-icon class="input-icon" icon-name="utility:email" alternative-text="Work Email"
+                            size="xx-small"></lightning-icon>
+                        <input type="text" data-id="inputEmail" name="workemail" placeholder="Work Email"
+                            class="slds-input input-element" value={WorkEmail} onkeyup={handleFieldChanges}
+                            pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" required />
+                    </div>
+                </div>
+            </div>
+            <!--Home Office City-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Last Name" style="font:size 500px;">Home Office City</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:agent_home"
+                            alternative-text="Home Office City" size="xx-small"></lightning-icon>
+                        <input type="text" data-id="inputHomeOfficeCity" name="homeofficecity"
+                            placeholder="Home Office City" class="slds-input input-element" value={MaillingCity}
+                            onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+            </div>
+            <!--Preferred Language-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="preferredLanguage" style="font:size 500px;">Preferred Language</label></strong>
+                    <lightning-combobox name="preferredLanguage" value={preferredLanguage}
+                        placeholder="Select Preferred Language" options={preferredLanguageOptions}
+                        onchange={handleFieldChanges}>
+                    </lightning-combobox>
+                </div>
+            </div>
+            <!--Home Office Country-->
+            <div class="slds-col">
+                <div class="slds-form-element slds-form-element__control">
+                    <strong><label for="Home Office Country" style="font:size 500px;">Home Office
+                            Country</label></strong>
+                    <lightning-combobox name="homeOfficeCountry" value={HomeOfficeCountry}
+                        placeholder="Select Home Office Country" options={options} onchange={handleFieldChanges}>
+                    </lightning-combobox>
+                </div>
+            </div>
+            <!--Company Affiliation-->
+            <div class="slds-col">
+                <div class="slds-form-element slds-form-element__control">
+                    <strong><label for="Home Office Country" style="font:size 500px;">Company
+                            Affiliation</label></strong>
+                    <lightning-combobox name="CompanyAffiliation" value={CompanyAffiliation}
+                        placeholder="Select Company Affiliation" options={CAOptions} onchange={handleFieldChanges}>
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <!-- Business Unit for Anglo American-->
+            <template if:true={isAngloAmerican}>
+                <div class="slds-col">
+                    <div class="slds-form-element slds-form-element__control">
+                        <strong><label for="Home Office Country" style="font:size 500px;">Business Unit</label></strong>
+                        <lightning-combobox name="BusinessUnitAA" value={BusinessUnitAA}
+                            placeholder="Select  Business Unit" options={BUAAOptions} onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Business Unit for DeBeers-->
+            <template if:true={isDeBeers}>
+                <div class="slds-col">
+                    <div class="slds-form-element">
+                        <strong><label for="Home Office Country" style="font:size 500px;">Business Unit</label></strong>
+                        <lightning-combobox name="BusinessUnitDB" value={BusinessUnitDB}
+                            placeholder="Select  Business Unit" options={BUDBOptions} onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+
+            </template>
+            <!--Selected Other Business Unit-->
+            <template if:true={otherSelected}>
+                <div class="slds-col">
+                    <span>
+                        <strong><label for="Home Office Country" style="font:size 500px;">Other Business
+                                Unit</label></strong>
+                        <lightning-input name="otherBusinessUnit" value={otherBusinessUnit}
+                            onchange={handleFieldChanges}>
+                        </lightning-input>
+                    </span>
+                </div>
+            </template>
+            <!--UserName and Password-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Username" style="font:size 500px;">Username</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left tooltip">
+                        <lightning-icon class="input-icon" icon-name="utility:user" alternative-text="Username"
+                            size="xx-small"></lightning-icon>
+                        <input type="text" data-id="inputUsername" name="username" placeholder="Username"
+                            class="slds-input input-element" value={WorkEmail} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+            </div>
+
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Password" style="font:size 500px;">Password</label></strong>
+                    <lightning-helptext
+                        content="Password must be Minimum eight characters, at least one letter, one number and one special character.">
+                    </lightning-helptext>
+                    <div class="slds-form-element__control slds-input-has-icon">
+                        <lightning-icon class="input-icon" icon-name="utility:lock" alternative-text="Password"
+                            size="xx-small"></lightning-icon>
+                        <input type="password" data-id="inputPassword" name="password" placeholder="Create Password"
+                            class="slds-input input-element" value={Password} onchange={handleFieldChanges}
+                            pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" required />
+                    </div>
+                </div>
+            </div>
+            <!--Confirm Password-->
+            <div class="slds-col">
+                <div class="slds-form-element">
+                    <strong><label for="Confirm Password" style="font:size 500px;">Confirm Password</label></strong>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left tooltip">
+                        <lightning-icon class="input-icon" icon-name="utility:lock" alternative-text="confirm Password"
+                            size="xx-small"></lightning-icon>
+                        <input type="password" data-id="inputConfirmPassword" name="confirmpassword"
+                            placeholder="Confirm Password" class="slds-input input-element" value={confirmPassword}
+                            onchange={handleFieldChanges}
+                            pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" required />
+                    </div>
+                </div>
+            </div>
+            <!--Calling saveRecords JS function-->
+            <div class="slds-align_absolute-center slds-p-top_small">
+                <lightning-button name="Save" label="Save" onclick={saveRecords}></lightning-button>
+            </div>
+        </template>
+    </div>
+    <!--Modal after User is created-->
+    <template if:true={isUserCreated}>
+        <section role="dialog" tabindex="-1" aria-label="Meaningful description of the modal content" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header slds-modal__header_empty">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={handleCancel}>
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p>You have successfully registered to the community portal. You will now be directed to the login
+                        page</p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_brand slds-align_absolute-center" onclick={handleOK}>OK</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

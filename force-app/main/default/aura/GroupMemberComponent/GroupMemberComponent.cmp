@@ -1,0 +1,66 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                controller="GroupMemberController"
+                access="global" >
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="userId" type="String"/>
+    <aura:attribute name="userProfile" type="String"/>
+    <aura:attribute name="showComponent" type="Boolean" default="false"/>
+    <aura:attribute name="groupMemberList" type="List"/>
+    <aura:attribute name="groupMemberSize" type="Decimal" default="0"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div>
+        <div style="{!v.showComponent?'display:block':'display:none'}" >
+            <div class="componentDiv">
+                <div class="header">
+                    <div>
+                        <lightning:icon iconName="standard:groups" alternativeText="Members" title="Members" size="small" />
+                        <span class="slds-p-left_x-small" >
+                            <h2 class="slds-card__header-title headerText">
+                                Members
+                                <span class="slds-p-left_xx-small">
+                                    ({!v.groupMemberSize})
+                                </span>
+                            </h2>
+                        </span>
+                    </div>
+                </div>
+                <table class="tableCss">
+                    <thead>
+                        <tr>
+                            <td style="width: 15%;padding-left: 1rem;">Photo</td>
+                            <td style="width: 25%;">Name</td>
+                            <td style="width: 25%;">Title</td>
+                            <td style="width: 35%;padding-right: 1rem;">Email</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:if isTrue="{!v.groupMemberList != null}">
+                            <aura:iteration items="{!v.groupMemberList}" var="grpMem">
+                                <tr>
+                                    <td style="padding-left: 1rem;"><img src="{!grpMem.Member.SmallPhotoUrl}" style="border-radius:50%; width:30px;" /></td>
+                                    <td class="rowCss slds-truncate">
+                                        <span title="{!grpMem.Member.Name}">
+                                            {!grpMem.Member.Name}
+                                        </span>
+                                    </td>
+                                    <td class="rowCss slds-truncate">
+                                        <span title="{!grpMem.Member.Title}">
+                                            {!grpMem.Member.Title}
+                                        </span>
+                                    </td>
+                                    <td class="rowCss slds-truncate" style="padding-right: 1rem;">
+                                        <span title="{!grpMem.Member.Email}">
+                                            <lightning:formattedEmail value="{!grpMem.Member.Email}" />
+                                        </span>
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </aura:if>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</aura:component>

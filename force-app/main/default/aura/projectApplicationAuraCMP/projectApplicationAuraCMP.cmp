@@ -1,0 +1,7 @@
+<aura:component controller="deleteProjectApplicationController" implements="lightning:actionOverride" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="IsPortalUser" type="Boolean"/>
+    <aura:if isTrue="{!v.IsPortalUser}">
+        <c:projectApplication></c:projectApplication>
+    </aura:if>
+</aura:component>

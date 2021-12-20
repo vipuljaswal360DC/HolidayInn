@@ -1,0 +1,447 @@
+<aura:component access="global" 
+                description="ShowCommunityFolderFilesLinksComp" 
+                controller="ShowGroupFolderController" 
+                implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:hasRecordId">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="recordId" type="String" default="0F93B0000008WQpSAM"/>
+    <aura:attribute name="userId" type="String"/>
+    <aura:attribute name="folderType" type="String" default="Group"/>
+    <aura:attribute name="profileNames" type="String" default="System Administrator,Custom Customer Community Plus User,Innovate EOI Profile"/>
+    <aura:attribute name="folderList" type="List"/>
+    <aura:attribute name="subFolderList" type="List"/>
+    <aura:attribute name="filesList" type="List"/>
+    <aura:attribute name="linksList" type="List"/>
+    <aura:attribute name="isGroupFile" type="Boolean" default="false"/>
+    <aura:attribute name="selectedFolderId" type="String"/>
+    <aura:attribute name="parentFolderId" type="String"/>
+    <aura:attribute name="userProfile" type="String"/>
+    <aura:attribute name="recIdToDel" type="String"/>
+    <aura:attribute name="recIdToDelobjType" type="String"/>
+    <aura:attribute name="selectedFolder" type="String"/>
+    <aura:attribute name="selectedTab" type="String" default="one"/>
+    <aura:attribute name="folderSection" type="Boolean" default="true"/>
+    <aura:attribute name="showConfirmDialog" type="Boolean" default="false"/>
+    <aura:attribute name="uploadDelFunActive" type="Boolean" default="false"/>
+    <aura:attribute name="showComponent" type="Boolean" default="false"/>
+    <aura:attribute name="showLinkSection" type="Boolean" default="false"/>
+    <aura:attribute name="showSubFolderSection" type="Boolean" default="false"/>
+    <aura:attribute name="showFolderSection" type="Boolean" default="false"/>
+    <aura:attribute name="createLinkObj" type="Community_Link__c" default="{'sObjectType' : 'Community_Link__c','Title__c' : '','Link__c' : ''}"/>
+    <aura:attribute name="createSubFolderObj" type="Community_Folder__c" default="{'sObjectType' : 'Community_Folder__c','Name' : ''}"/>
+    <aura:attribute name="createFolderObj" type="Community_Folder__c" default="{'sObjectType' : 'Community_Folder__c','Name' : ''}"/>
+    
+    
+    <aura:attribute name="showRenameDialog" type="Boolean" default="false"/>
+	<aura:attribute name="newName" type="String"/>
+	<aura:attribute name="recIdToRename" type="String"/> 
+    <aura:attribute name="recIdToRenameobjType" type="String"/>
+    
+    <div>
+        <div style="{!v.showComponent?'display:block':'display:none'}" >
+            <aura:renderIf isTrue="{!v.folderSection}">
+                <!-- Section to show all Folder list Start-->
+                <div class="FolderSection">
+                    <div class="HeaderDiv">
+                        <lightning:layout >
+                            <lightning:layoutItem size="6">
+                                <div>
+                                    <!--<img src="{!$Resource.FolderLogo}" alt="folder" class="slds-m-right_small" style="width: 50px !important;"/> Resources and Tools-->
+                                    <lightning:icon iconName="standard:file" alternativeText="file" title="file" class="slds-m-right_small"/> Files
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6">
+                                <div>
+                                    <div class="BackBtnDivCss">
+                                        <aura:if isTrue="{!v.uploadDelFunActive}">
+                                            <lightning:button label="Create Folder" title="Create Folder" onclick="{! c.showCreateFolderSection }" class="BackBtnCss"/>
+                                            <lightning:fileUpload label=""
+                                                                  name="fileUploader"
+                                                                  multiple="true"
+                                                                  recordId="{!v.recordId}"
+                                                                  onuploadfinished="{!c.handleUploadFinishedHome}" class="UploadFileCss"/>
+                                        </aura:if>
+                                    </div>
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>
+                    <div class="ComponentDiv">
+                        <table>
+                            <tr>
+                                <td class="tableheaderCss">Title</td>
+                                <td></td>
+                            </tr>
+                            <aura:if isTrue="{!v.folderList != null || v.filesList != null}">
+                                <aura:if isTrue="{!v.showFolderSection}">
+                                        <tr>
+                                            <td><lightning:input name="input1" placeholder="Enter Name" variant="label-hidden" label="Title" value="{!v.createFolderObj.Name}" required="true"/></td>
+                                            <td class="DeleteTDCss">
+                                                <lightning:buttonIcon iconName="utility:close" variant="bare" alternativeText="close" title="close" onclick="{! c.closeFolder }"/>
+                                                <lightning:buttonIcon iconName="utility:check" variant="bare" alternativeText="save" title="save" onclick="{! c.saveFolder }"/>
+                                            </td>
+                                        </tr>
+                                    </aura:if>
+                                <aura:if isTrue="{!v.folderList != null}">
+                                    <aura:iteration items="{!v.folderList}" var="folder">
+                                        <tr>
+                                            <td>
+                                                <lightning:icon iconName="utility:open_folder" alternativeText="folder" title="folder" size="small" class="slds-p-right_x-small"/>
+                                                <a onclick="{!c.openSelectedFolder}" data-Id="{!folder.Id}" title="{!folder.Name}">{!folder.Name}</a>
+                                            </td>
+                                            <td class="DeleteTDCss">
+                                                <aura:if isTrue="{!v.uploadDelFunActive}">
+                                                    <lightning:buttonIcon iconName="utility:edit" variant="bare" alternativeText="Edit" title="Edit" name="{!folder.Id}" onclick="{! c.renameFolderHome }"/>
+                                                </aura:if>
+                                            </td>
+                                        </tr>
+                                    </aura:iteration>
+                                    <!--<aura:set attribute="else">
+                                <aura:if isTrue="{!v.showFolderSection}">
+                                    <tr>
+                                        <td><lightning:input name="input1" placeholder="Enter Name" variant="label-hidden" label="Title" value="{!v.createFolderObj.Name}" required="true"/></td>
+                                        <td class="DeleteTDCss">
+                                            <lightning:buttonIcon iconName="utility:close" variant="bare" alternativeText="close" title="close" onclick="{! c.closeFolder }"/>
+                                            <lightning:buttonIcon iconName="utility:check" variant="bare" alternativeText="save" title="save" onclick="{! c.saveFolder }"/>
+                                        </td>
+                                    </tr>
+                                </aura:if>
+                               <tr>
+                                    <td colspan="4">
+                                        <div style="text-align: center;">No Folder Found.</div>
+                                    </td>
+                                </tr>
+                            </aura:set>-->
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!v.filesList != null}">
+                                    <aura:iteration items="{!v.filesList}" var="file">
+                                        <tr>
+                                            <td>
+                                                <lightning:icon iconName="utility:file" alternativeText="file" title="file" size="small" class="slds-p-right_x-small"/>
+                                                <a onclick="{!c.openSelectedFileHome}" data-Id="{!file.DocId}" title="{!file.Title}">{!file.Title}</a>
+                                            </td>
+                                            <td class="DeleteTDCss">
+                                                <aura:if isTrue="{!v.uploadDelFunActive}">
+                                                    <lightning:buttonIcon iconName="utility:edit" variant="bare" alternativeText="Edit" title="Edit" name="{!file.DocId}" onclick="{! c.renameFileHome }"/>
+                                                    <lightning:buttonIcon iconName="utility:delete" variant="bare" alternativeText="Delete" title="Delete" name="{!file.DocId}" onclick="{! c.deleteFileHome }"/>
+                                                </aura:if>
+                                            </td>
+                                            
+                                        </tr>
+                                    </aura:iteration>
+                                </aura:if> 
+                                <aura:set attribute="else">
+                                    <aura:if isTrue="{!v.showFolderSection}">
+                                        <tr>
+                                            <td><lightning:input name="input1" placeholder="Enter Name" variant="label-hidden" label="Title" value="{!v.createFolderObj.Name}" required="true"/></td>
+                                            <td class="DeleteTDCss">
+                                                <lightning:buttonIcon iconName="utility:close" variant="bare" alternativeText="close" title="close" onclick="{! c.closeFolder }"/>
+                                                <lightning:buttonIcon iconName="utility:check" variant="bare" alternativeText="save" title="save" onclick="{! c.saveFolder }"/>
+                                            </td>
+                                        </tr>
+                                    </aura:if>
+                                    <tr>
+                                        <td colspan="2">
+                                            <div style="text-align: center;">No Folders/Files Found.</div>
+                                        </td>
+                                    </tr>
+                                </aura:set>
+                            </aura:if>
+                        </table>
+                    </div>
+                    <div class="FotterDiv"></div>
+                </div>
+                <!-- Section to show all Folder list End-->
+                <aura:set attribute="else">
+                    <div class="FilesLinksSection">
+                        <div class="HeaderDiv">
+                            <lightning:layout >
+                                <lightning:layoutItem size="6">
+                                    <div>
+                                        <!--<img src="{!$Resource.FolderLogo}" alt="folder" class="slds-m-right_small" style="width: 50px !important;"/> {!v.selectedFolder}-->
+                                        <lightning:icon iconName="standard:file" alternativeText="file" title="file" class="slds-m-right_small"/> {!v.selectedFolder}
+                                        
+                                    </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="6">
+                                    <div class="BackBtnDivCss">
+                                        <aura:if isTrue="{!v.uploadDelFunActive}">
+                                            <lightning:fileUpload label=""
+                                                                  name="fileUploader"
+                                                                  multiple="true"
+                                                                  recordId="{!v.selectedFolderId}"
+                                                                  onuploadfinished="{!c.handleUploadFinished}" class="UploadFileCss"/>
+                                            <lightning:button label="Create Subfolder" title="Create Subfolder" onclick="{! c.showCreateSubFolderSection }" class="BackBtnCss"/>
+                                            <lightning:button label="Upload Link" title="Upload Link" onclick="{! c.showCreateLinkSection }" class="BackBtnCss"/>
+                                        </aura:if>
+                                        <lightning:button label="Back" title="Back" onclick="{! c.goBackToFolders }" class="BackBtnCss"/>
+                                        <!--<lightning:buttonIcon iconName="utility:back"  alternativeText="Back" title="Back" onclick="{! c.goBackToFolders }" class="BackBtnCss"/>-->
+                                    </div>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                            
+                            
+                        </div>
+                        <lightning:tabset selectedTabId="{!v.selectedTab}" onselect="{! c.handleSelect }" aura:id="tabs">
+                            <!-- Section to show all Sub Folder list Start-->
+                            <lightning:tab label="Folders / Files" title="Folders" id="one" iconName="utility:open_folder">
+                                <div>
+                                    <table >
+                                        <tr>
+                                            
+                                            <td class="tableheaderCss">Title</td>
+                                            <td></td>
+                                            
+                                        </tr>
+                                        <aura:if isTrue="{!v.subFolderList != null || v.filesList != null}">
+                                            
+                                            
+                                            
+                                            <aura:if isTrue="{!v.subFolderList != null}">
+                                                <aura:if isTrue="{!v.showSubFolderSection}">
+                                                    <tr>
+                                                        <td><lightning:input name="input1" placeholder="Enter Name" variant="label-hidden" label="Title" value="{!v.createSubFolderObj.Name}" required="true"/></td>
+                                                        <td class="DeleteTDCss">
+                                                            <lightning:buttonIcon iconName="utility:close" variant="bare" alternativeText="close" title="close" onclick="{! c.closeSubFolder }"/>
+                                                            <lightning:buttonIcon iconName="utility:check" variant="bare" alternativeText="save" title="save" onclick="{! c.saveSubFolder }"/>
+                                                        </td>
+                                                    </tr>
+                                                </aura:if>
+                                                <aura:iteration items="{!v.subFolderList}" var="subFolder">
+                                                    <tr>
+                                                        <td>
+                                                            <!--<img src="{!$Resource.FolderLogo}" alt="folder" class="slds-m-right_small" style="width: 25px !important;"/>-->
+                                                            <lightning:icon iconName="utility:open_folder" alternativeText="folder" title="folder" size="small" class="slds-p-right_x-small"/>
+                                                            <a onclick="{!c.openSelectedFolder}" data-Id="{!subFolder.Id}" title="{!subFolder.Name}">{!subFolder.Name}</a>
+                                                        </td>
+                                                        <td class="DeleteTDCss">
+                                                            <aura:if isTrue="{!v.uploadDelFunActive}">
+                                                                <lightning:buttonIcon iconName="utility:edit" variant="bare" alternativeText="Edit" title="Edit" name="{!subFolder.Id}" onclick="{! c.renameFolder }"/>
+                                                                <!--<lightning:buttonIcon iconName="utility:delete" variant="bare" alternativeText="Delete" title="Delete" name="{!subFolder.Id}" onclick="{! c.deleteSubFolder }"/>-->
+                                                            </aura:if>
+                                                        </td>
+                                                        
+                                                    </tr>
+                                                </aura:iteration>
+                                                
+                                                <!--<aura:set attribute="else">
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div style="text-align: center;">No Folder Found.</div>
+                                                    </td>
+                                                </tr>
+                                                <aura:if isTrue="{!v.showSubFolderSection}">
+                                                    <tr>
+                                                        <td><lightning:input name="input1" variant="label-hidden" label="Title" value="{!v.createSubFolderObj.Name}" required="true"/></td>
+                                                        <td class="DeleteTDCss">
+                                                            <lightning:buttonIcon iconName="utility:close" variant="bare" alternativeText="close" title="close" onclick="{! c.closeSubFolder }"/>
+                                                            <lightning:buttonIcon iconName="utility:check" variant="bare" alternativeText="save" title="save" onclick="{! c.saveSubFolder }"/>
+                                                        </td>
+                                                    </tr>
+                                                </aura:if>
+                                            </aura:set>-->
+                                            </aura:if>
+                                            <aura:if isTrue="{!v.filesList != null}">
+                                                <aura:iteration items="{!v.filesList}" var="file">
+                                                    <tr>
+                                                        <td>
+                                                            <lightning:icon iconName="utility:file" alternativeText="file" title="file" size="small" class="slds-p-right_x-small"/>
+                                                            <a onclick="{!c.openSelectedFile}" data-Id="{!file.DocId}" title="{!file.Title}">{!file.Title}</a>
+                                                        </td>
+                                                        <td class="DeleteTDCss">
+                                                            <aura:if isTrue="{!v.uploadDelFunActive}">
+                                                                <lightning:buttonIcon iconName="utility:edit" variant="bare" alternativeText="Edit" title="Edit" name="{!file.DocId}" onclick="{! c.renameFile }"/>
+                                                                <lightning:buttonIcon iconName="utility:delete" variant="bare" alternativeText="Delete" title="Delete" name="{!file.DocId}" onclick="{! c.deleteFile }"/>
+                                                            </aura:if>
+                                                        </td>
+                                                        
+                                                    </tr>
+                                                </aura:iteration>
+                                                <!--<aura:set attribute="else">
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div style="text-align: center;">No Files Found.</div>
+                                                    </td>
+                                                </tr>
+                                            </aura:set>-->
+                                            </aura:if>
+                                            <aura:set attribute="else">
+                                                <aura:if isTrue="{!v.showSubFolderSection}">
+                                                    <tr>
+                                                        <td><lightning:input name="input1" placeholder="Enter Name" variant="label-hidden" label="Title" value="{!v.createSubFolderObj.Name}" required="true"/></td>
+                                                        <td class="DeleteTDCss">
+                                                            <lightning:buttonIcon iconName="utility:close" variant="bare" alternativeText="close" title="close" onclick="{! c.closeSubFolder }"/>
+                                                            <lightning:buttonIcon iconName="utility:check" variant="bare" alternativeText="save" title="save" onclick="{! c.saveSubFolder }"/>
+                                                        </td>
+                                                    </tr>
+                                                </aura:if>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div style="text-align: center;">No Record Found.</div>
+                                                    </td>
+                                                </tr>
+                                                
+                                            </aura:set> 
+                                        </aura:if>    
+                                    </table>
+                                </div>
+                            </lightning:tab>
+                            <!-- Section to show all Sub Folder list End-->
+                            <!-- Section to show all File list Start-->
+                            <!--<lightning:tab label="Files" title="Files" id="two" iconName="utility:file">
+                            <div>
+                                <table >
+                                    <tr>
+                                        
+                                        <td class="tableheaderCss">Title</td>
+                                        <td></td>
+                                        
+                                    </tr>
+                                    <aura:if isTrue="{!v.filesList != null}">
+                                        <aura:iteration items="{!v.filesList}" var="file">
+                                            <tr>
+                                                <td><a onclick="{!c.openSelectedFile}" data-Id="{!file.DocId}" title="{!file.Title}">{!file.Title}</a></td>
+                                                <td class="DeleteTDCss">
+                                                    <aura:if isTrue="{!v.uploadDelFunActive}">
+                                                        <lightning:buttonIcon iconName="utility:delete" variant="bare" alternativeText="Delete" title="Delete" name="{!file.DocId}" onclick="{! c.deleteFile }"/>
+                                                    </aura:if>
+                                                </td>
+                                                
+                                            </tr>
+                                        </aura:iteration>
+                                        <aura:set attribute="else">
+                                            <tr>
+                                                <td colspan="2">
+                                                    <div style="text-align: center;">No Files Found.</div>
+                                                </td>
+                                            </tr>
+                                        </aura:set>
+                                    </aura:if> 
+                                </table>
+                            </div>
+                        </lightning:tab>-->
+                            <!-- Section to show all File list End-->
+                            <!-- Section to show all Link list Start-->
+                            <lightning:tab label="Links" title="Links" id="three" iconName="doctype:link">
+                                <div>
+                                    
+                                    <table class="tableCss">
+                                        <tr>
+                                            <td class="tableheaderCss">Title</td>
+                                            <td class="tableheaderCss">Url</td>
+                                            <td style="width:10%;"></td>
+                                        </tr>
+                                        
+                                        <aura:if isTrue="{!v.linksList != null}">
+                                            <aura:if isTrue="{!v.showLinkSection}">
+                                                <tr>
+                                                    <td><lightning:input name="input1" placeholder="Enter Link Title" variant="label-hidden" label="Title" value="{!v.createLinkObj.Title__c}" required="true"/></td>
+                                                    <td><lightning:input name="input1" placeholder="Enter Url" variant="label-hidden" label="Title" value="{!v.createLinkObj.Link__c}" required="true"/></td>
+                                                    <td class="DeleteTDCss">
+                                                        <lightning:buttonIcon iconName="utility:close" variant="bare" alternativeText="save" title="save" onclick="{! c.closeLink }"/>
+                                                        <lightning:buttonIcon iconName="utility:check" variant="bare" alternativeText="save" title="save" onclick="{! c.saveLink }"/>
+                                                    </td>
+                                                </tr>
+                                            </aura:if>
+                                            <aura:iteration items="{!v.linksList}" var="link">
+                                                <tr>
+                                                    <td>{!link.Title__c}</td>
+                                                    <td><a onclick="{!c.openSelectedLink}" data-Id="{!link.Link__c}" title="{!link.Link__c}">{!link.Link__c}</a></td>
+                                                    <td class="DeleteTDCss">
+                                                        <aura:if isTrue="{!v.uploadDelFunActive}">
+                                                            <lightning:buttonIcon iconName="utility:delete" variant="bare" alternativeText="Delete" title="Delete" name="{!link.Id}" onclick="{! c.deleteLink }"/>
+                                                        </aura:if>
+                                                    </td>
+                                                </tr>
+                                            </aura:iteration>
+                                            
+                                            <aura:set attribute="else">
+                                                <aura:if isTrue="{!v.showLinkSection}">
+                                                    <tr>
+                                                        <td><lightning:input name="input1" placeholder="Enter Link Title" variant="label-hidden" label="Title" value="{!v.createLinkObj.Title__c}" required="true"/></td>
+                                                        <td><lightning:input name="input1" placeholder="Enter Url" variant="label-hidden" label="Title" value="{!v.createLinkObj.Link__c}" required="true"/></td>
+                                                        <td class="DeleteTDCss">
+                                                            <lightning:buttonIcon iconName="utility:close" variant="bare" alternativeText="close" title="save" onclick="{! c.closeLink }"/>
+                                                            <lightning:buttonIcon iconName="utility:check" variant="bare" alternativeText="save" title="save" onclick="{! c.saveLink }"/>
+                                                        </td>
+                                                    </tr>
+                                                </aura:if>
+                                                <tr>
+                                                    <td colspan="3">
+                                                        <div style="text-align: center;">No Links Found.</div>
+                                                    </td>
+                                                </tr>
+                                                
+                                            </aura:set>
+                                        </aura:if> 
+                                    </table>
+                                    
+                                </div>
+                            </lightning:tab>
+                            <!-- Section to show all Link list End-->
+                        </lightning:tabset>
+                    </div>
+                </aura:set>
+            </aura:renderIf>
+            
+            <aura:if isTrue="{!v.showConfirmDialog}">
+                <!--Modal Box Start-->
+                <div role="dialog" class="slds-modal slds-fade-in-open ">
+                    <div class="slds-modal__container">
+                        <!--Modal Box Header Start-->
+                        <header class="slds-modal__header">
+                            <h1 class="slds-text-heading--medium">Confirmation</h1>
+                        </header>
+                        <!--Modal Box Header End-->
+                        
+                        <!--Modal Box Content Start-->
+                        <div class="slds-modal__content slds-p-around--medium">
+                            <center><b>Are you sure you want to delete this item?</b></center>
+                        </div>
+                        <!--Modal Box Content End-->
+                        
+                        <!--Modal Box Button Start-->
+                        <footer class="slds-modal__footer">
+                            <lightning:button name='No' label='No' onclick='{!c.handleConfirmDialogNo}'/>
+                            <lightning:button variant="brand" name='Yes' label='Yes' onclick='{!c.handleConfirmDialogYes}'/>
+                        </footer>
+                        <!--Modal Box Button End-->
+                    </div>
+                </div>
+                <div class="slds-backdrop slds-backdrop--open"></div>            
+            </aura:if>
+            
+            <aura:if isTrue="{!v.showRenameDialog}">
+                <!--Modal Box Start-->
+                <div role="dialog" class="slds-modal slds-fade-in-open ">
+                    <div class="slds-modal__container">
+                        <!--Modal Box Header Start-->
+                        <header class="slds-modal__header">
+                            <h1 class="slds-text-heading--medium">Rename</h1>
+                        </header>
+                        <!--Modal Box Header End-->
+                        
+                        <!--Modal Box Content Start-->
+                        <div class="slds-modal__content slds-p-around--medium">
+                           <!-- <center><b>Are you sure you want to delete this item?</b></center>-->
+                            <center>
+                                <lightning:input name="input5" placeholder="Enter New Name" variant="label-hidden" label="Title" value="{!v.newName}" required="true"/>
+                            </center>
+                        </div>
+                        <!--Modal Box Content End-->
+                        
+                        <!--Modal Box Button Start-->
+                        <footer class="slds-modal__footer">
+                            <lightning:button name='Cancel' label='Cancel' onclick='{!c.handleRenameDialogNo}'/>
+                            <lightning:button variant="brand" name='Rename' label='Rename' onclick='{!c.handleRenameDialogYes}'/>
+                        </footer>
+                        <!--Modal Box Button End-->
+                    </div>
+                </div>
+                <div class="slds-backdrop slds-backdrop--open"></div>            
+            </aura:if>
+        </div>
+    </div>
+</aura:component>

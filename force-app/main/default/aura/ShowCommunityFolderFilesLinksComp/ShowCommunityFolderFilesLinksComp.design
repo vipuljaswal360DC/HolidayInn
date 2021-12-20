@@ -1,0 +1,4 @@
+<design:component >
+    <design:attribute name="folderType" label="Folder Type" />
+    <design:attribute name="profileNames" label="Profile Names" />
+</design:component>

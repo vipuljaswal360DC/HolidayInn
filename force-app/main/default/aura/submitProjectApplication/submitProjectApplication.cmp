@@ -1,0 +1,69 @@
+<aura:component controller="SubmitApplicationController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+    <aura:attribute name="emsg" type="Boolean" default="true"/>
+    <aura:attribute name="NISubmissionMsg" type="Boolean" default="false"/>
+    <aura:attribute name="validationError" type="Boolean" default="false"/>
+    <aura:attribute name="validationFields" type="String"/>
+    <aura:attribute name="SectionName" type="String"/>
+    <aura:attribute name="openEditLWC" type="Boolean" default="false"/>
+    <div>
+        <aura:if isTrue="{!v.emsg}">
+            <div>
+                <br/>
+                <br/>
+                <br/>
+                
+                <p style="font-size: 14px;">
+                    You have reached the end of the online Project Application. Before you hit ‘Submit,’ the Ambassadors
+                    for Good team has a few important reminders.<br/><br/>
+                    <u>Once you hit the ‘Submit’ button at the bottom of this page, all responses in your Project
+                        Application will be final.</u>After you hit the <b>‘Submit’</b> button, you will <u>not</u> be able to
+                    make any changes to your application.<br/>
+                    <br/>
+                    After your online Project Application has been submitted, you can expect to receive further
+                    news about project selection from the Ambassadors for Good team by late May.<br/><br/>
+                    
+                    If you have indicated that your project will also be submitting a <b>Grant Request</b>, please
+                    ensure that your partner organisation is on track to submit this, along with all supporting documents, by
+                    <b>  April 1, 2022</b>.
+                </p>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+            </div>    
+            <br/>
+            <lightning:button class="slds-float_left" variant="destructive" label="Cancel" title="Cancel" onclick="{! c.handleCancel }"/>
+            <lightning:button class="slds-float_right" variant="brand" label="Proceed with Submission" title="Proceed with Submission" onclick="{! c.handleSubmission }"/>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.validationError}">
+            <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+            <lightning:card title="Project Application Validation Error" iconName="utility:warning">
+                <p class="slds-p-horizontal_small" style="font-size: 14px;">
+                    <b>Project application has some missing/invalid fields and can not be submitted. Click on Edit to fix the missing field.<br/><br/>
+                    Please enter value for the field mentioned below under section - <br/>"{!v.SectionName}".</b><br/><br/>
+                    <center>{!v.validationFields}</center>
+                </p><br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <div class="slds-float_right" style="margin:5px;">
+                    <lightning:button  variant="brand" label="Ok" title="Ok" onclick="{! c.handleCancel }"/>
+                </div>
+                <div  class="slds-float_right" style="margin:5px;">
+                    <lightning:button variant="brand" label="Edit Application" title="Edit Application" onclick="{! c.editLWC }"/>
+                </div>
+            </lightning:card>
+        </aura:if>
+    </div>
+    <aura:if isTrue="{!v.openEditLWC}">
+        <c:validationFields recordId="{!v.recordId}"></c:validationFields>
+    </aura:if>
+</aura:component>

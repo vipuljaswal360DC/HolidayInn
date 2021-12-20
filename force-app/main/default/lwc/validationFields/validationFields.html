@@ -1,0 +1,1594 @@
+<template>
+    <lightning-quick-action-panel header="Edit Project Application">
+        <template if:true={showFirst}>
+            <div class="slds-form">
+                <!--Project Name-->
+                <div class="slds-form-element slds-form-element_stacked">
+                    <strong><label class="slds-form-element__label" style="font-size:120%;">Project
+                            Name<span style="color: #E45620;" title="This is required field.">
+                                *</span></label></strong>
+                    <p>This name will be used to reference your project moving forward.</p>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="projectName" name="Project Name" class="slds-input input-element"
+                            value={projectName} onchange={handleProjectNameChanges} required/>
+                    </div>
+                </div>
+                <!--Team Captain-->
+                <div class="slds-form-element slds-form-element_stacked">
+                    <strong><label class="slds-form-element__label" style="font-size:120%;">Team
+                            Captain</label></strong>
+                    <p>Who is the team captain? This person will be the main point of contact for the Ambassadors for
+                        Good programme management staff throughout the project lifecycle.</p>
+                </div>
+                <!--First Name-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>First Name</b><span
+                            style="color: #E45620;" title="This is required field.">
+                            *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="firstName" name="First Name,Team Information" class="slds-input input-element"
+                            value={firstName} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+                <!--Surname-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Surname</b><span
+                            style="color: #E45620;" title="This is required field.">
+                            *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="surname" name="Surname,Team Information" class="slds-input input-element"
+                            value={surname} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+                <!--Job Title-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Job Title</b><span
+                            style="color: #E45620;" title="This is required field.">
+                            *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="jobTitle" name="Job Title,Team Information" class="slds-input input-element"
+                            value={jobTitle} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+
+                <!--Work Email-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Work Email</b><span
+                            style="color: #E45620;" title="This is required field.">
+                            *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="email" data-id="workEmail" name="Work Email,Team Information" class="slds-input input-element"
+                            pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" value={workEmail} onchange={handleFieldChanges}
+                            required />
+                    </div>
+                </div>
+
+                <!--Home Office City-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Home Office City</b><span
+                            style="color: #E45620;" title="This is required field.">
+                            *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="homeOfficeCity" name="Home Office City,Team Information"
+                            class="slds-input input-element" value={homeOfficeCity} onchange={handleFieldChanges}
+                            required />
+                    </div>
+                </div>
+
+                <!--Home Office Country-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Home Office Country</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <lightning-combobox data-id="homeOfficeCountry" name="Home Office Country,Team Information" value={HomeOfficeCountry} options={options}
+                            onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+                <!--Selected Other Country-->
+                <template if:true={isOtherCountrySelected}>
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Home Office
+                                Country</b></label>
+                        <div class="slds-form-element__control">
+                            <input type="text" data-id="otherHomeOfficeCountry" name="Other Home Office Country,Team Information"
+                                class="slds-input input-element" value={otherHomeOfficeCountry}
+                                onchange={handleFieldChanges} required />
+                        </div>
+                    </div>
+                </template>
+                <!--Company Affiliation-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Company Affiliation</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <lightning-combobox data-id="CompanyAffiliation" name="Company Affiliation,Team Information" value={CompanyAffiliation} options={CAOptions}
+                            onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+                <!-- Business Unit for Anglo American-->
+                <template if:true={isAngloAmerican}>
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Business Unit</b><span
+                                style="color: #E45620;" title="This is required field."> *</span></label>
+                        <div class="slds-form-element__control">
+                            <lightning-combobox data-id="BusinessUnitAA" name="Business Unit,Team Information" value={BusinessUnitAA} options={BUAAOptions}
+                                onchange={handleFieldChanges}>
+                            </lightning-combobox>
+                        </div>
+                    </div>
+                </template>
+                <!--Selected Other Business Unit-->
+                <template if:true={otherSelectedAA}>
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Business
+                                Unit</b></label>
+                        <div class="slds-form-element__control">
+                            <lightning-input  data-id="otherBusinessUnitAA" name="Other Business
+                            Unit,Team Information" value={otherBusinessUnitAA}
+                                onchange={handleFieldChanges}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Business Unit for DeBeers-->
+                <template if:true={isDeBeers}>
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Business Unit</b><span
+                                style="color: #E45620;" title="This is required field."> *</span></label>
+                        <div class="slds-form-element__control">
+                            <lightning-combobox data-id="BusinessUnitDB" name="Business Unit,Team Information" value={BusinessUnitDB} options={BUDBOptions}
+                                onchange={handleFieldChanges}>
+                            </lightning-combobox>
+                        </div>
+                    </div>
+                </template>
+
+                <!--Selected Other Business Unit-->
+                <template if:true={otherSelectedDB}>
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Business
+                                Unit</b></label>
+                        <div class="slds-form-element__control">
+                            <lightning-input data-id="otherBusinessUnitDB"  name="Other Business
+                            Unit,Team Information" value={otherBusinessUnitDB}
+                                onchange={handleFieldChanges}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <br><br>
+            <!--Buttons-->
+            <div class="slds-float_left">
+                <lightning-button variant="neutral" label="Back" onclick={handleCancel}></lightning-button>
+            </div>
+            <div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSave1}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSaveAndContinue1}></lightning-button>
+            </div-->
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Next" type="submit"
+                    onclick={handleNext}></lightning-button>
+            </div-->
+        </template>
+
+        <template if:true={showNext}>
+            <!--Line Manager Information Section-->
+            <div class="slds-form">
+                <strong><label style="font-size:120%;">Manager Information</label></strong>
+                <!--Full Name-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Full Name</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="fullName" name="Full Name,Manager Information" class="slds-input input-element"
+                            value={fullName} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+                <!--Work Email-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Work Email</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="email" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" data-id="workEmailLM"
+                            name="Work Email,Manager Information" class="slds-input input-element" value={workEmailLM}
+                            onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+                <!--How many additional team members do you have?-->
+                <div class="slds-form-element slds-form-element_stacked">
+                    <label class="slds-form-element__label"><b>How many additional team members do you have?</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="noOfTeamMember" name="How many additional team members do you have?,Manager Information"
+                            class="slds-input input-element" value={noOfTeamMember} onchange={handleFieldChanges}
+                            required />
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <!--Buttons-->
+            <div class="slds-float_left">
+                <lightning-button variant="neutral" label="Back" onclick={handleBack}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Next" type="submit"
+                    onclick={handleNext1}></lightning-button>
+            </div-->
+            <div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSave2}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSaveAndContinue2}></lightning-button>
+            </div-->
+        </template>
+        <!--Team Member 1 Details-->
+        <template if:true={hasTeamMember}>
+            <!--Team Member 1-->
+            <div class="slds-form-element slds-form-element_stacked">
+                <strong><label class="slds-form-element__label" style="font-size:120%;">Team
+                        Member 1 Details<span style="color: #E45620;" title="This is required field.">
+                            *</span></label></strong>
+            </div>
+            <!--Team Member First Name-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>First Name</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm1FirstName" name="First Name,Team
+                    Member 1 Details" class="slds-input input-element"
+                        value={tm1FirstName} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <!--Team Member Surname-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Surname</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm1Surname" name="Surname,Team Member 1 Details" class="slds-input input-element"
+                        value={tm1Surname} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <!--Team Member Job Title-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Job Title</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm1JobTitle" name="Job Title,Team Member 1 Details" class="slds-input input-element"
+                        value={tm1JobTitle} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+
+            <!--Team Member Work Email-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Work Email</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="email" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" data-id="tm1WorkEmail" name="Work Email,Team Member 1 Details"
+                        class="slds-input input-element" value={tm1WorkEmail} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+
+            <!--Team Member Home Office City-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Home Office City</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm1HomeOfficeCity" name="Home Office City,Team Member 1 Details"
+                        class="slds-input input-element" value={tm1HomeOfficeCity} onchange={handleFieldChanges}
+                        required />
+                </div>
+            </div>
+
+            <!--Team Member Home Office Country-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Home Office Country</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <lightning-combobox data-id="tm1HomeOfficeCountry" name="Home Office Country,Team Member 1 Details" value={tm1HomeOfficeCountry} options={options}
+                        onchange={handleFieldChanges}>
+                    </lightning-combobox>
+                </div>
+            </div>
+            <!--Team Member Selected Other Country-->
+            <template if:true={is1TMOtherCountrySelected}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Home Office
+                            Country</b></label>
+                    <div class="slds-form-element__control">
+                        <lightning-input data-id="tm1OtherHomeOfficeCountry" name="Other Home Office Country,Team Member 1 Details" value={tm1OtherHomeOfficeCountry}
+                            onchange={handleFieldChanges}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+
+            <!--Team Member Company Affiliation-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Company Affiliation</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <lightning-combobox data-id="tm1CompanyAffiliation"  name="Company Affiliation,Team Member 1 Details" value={tm1CompanyAffiliation} options={CAOptions}
+                        onchange={handleFieldChanges}>
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <!--Team Member Business Unit for Anglo American-->
+            <template if:true={is1AngloAmerican}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Business Unit</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <lightning-combobox data-id="tm1BusinessUnitAA" name="Business Unit,Team Member 1 Details" value={tm1BusinessUnitAA} options={BUAAOptions}
+                            onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+            </template>
+            <!--Team Member Selected Other Business Unit for Anglo American-->
+            <template if:true={is1otherSelectedAA}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Business
+                            Unit</b></label>
+                    <div class="slds-form-element__control">
+                        <lightning-input data-id="tm1OtherBusinessUnitAA"  name="Other Business Unit,Team Member 1 Details" value={tm1OtherBusinessUnitAA}
+                            onchange={handleFieldChanges}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+
+            <!--Team Member Business Unit for DeBeers-->
+            <template if:true={is1DeBeers}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Business Unit</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <lightning-combobox data-id="tm1BusinessUnitDB"  name="Business Unit,Team Member 1 Details" value={tm1BusinessUnitDB} options={BUDBOptions}
+                            onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+            </template>
+
+            <!--Team Member Selected Other Business Unit for DeBeers-->
+            <template if:true={is1otherSelectedBB}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Business
+                            Unit</b></label>
+                    <div class="slds-form-element__control">
+                        <lightning-input data-id="tm1OtherBusinessUnitBB" name="Other Business
+                        Unit,Team Member 1 Details" value={tm1OtherBusinessUnitBB}
+                            onchange={handleFieldChanges}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+
+            <strong><label for="Email" style="font-size:120%;">Manager Information</label></strong>
+            <!--Manager Full Name-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Full Name</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm1MfullName" name="Full Name,Team Member 1 Details" class="slds-input input-element"
+                        value={tm1MfullName} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <!--Manager Work Email-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Work Email</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="email" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" data-id="tm1MworkEmailLM"
+                        name="Work Email,Team Member 1 Details" class="slds-input input-element" value={tm1MworkEmailLM}
+                        onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <br><br>
+            <!--Buttons-->
+            <div class="slds-float_left">
+                <lightning-button variant="neutral" label="Back" onclick={handleTMBack}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Next" type="submit"
+                    onclick={handleTMNext}></lightning-button>
+            </div-->
+            <div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSave3}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSaveAndContinue3}></lightning-button>
+            </div-->
+        </template>
+        <!--Team Member 2 Details-->
+        <template if:true={has2TeamMember}>
+            <!--Team Member 2-->
+            <div class="slds-form-element slds-form-element_stacked">
+                <strong><label class="slds-form-element__label" style="font-size:120%;">Team
+                        Member 2 Details<span style="color: #E45620;" title="This is required field.">
+                            *</span></label></strong>
+            </div>
+            <!--Team Member 2 First Name-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>First Name</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm2FirstName" name="First Name,Team
+                    Member 2 Details" class="slds-input input-element"
+                        value={tm2FirstName} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <!--Team Member 2 Surname-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Surname</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm2Surname" name="Surname,Team
+                    Member 2 Details" class="slds-input input-element"
+                        value={tm2Surname} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <!--Team Member 2 Job Title-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Job Title</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm2JobTitle" name="Job Title,Team Member 2 Details" class="slds-input input-element"
+                        value={tm2JobTitle} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+
+            <!--Team Member 2 Work Email-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Work Email</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="email" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" data-id="tm2WorkEmail" name="Work Email,Team Member 2 Details"
+                        class="slds-input input-element" value={tm2WorkEmail} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+
+            <!--Team Member 2 Home Office City-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Home Office City</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm2HomeOfficeCity" name="Home Office City,Team Member 2 Details"
+                        class="slds-input input-element" value={tm2HomeOfficeCity} onchange={handleFieldChanges}
+                        required />
+                </div>
+            </div>
+
+            <!--Team Member 2 Home Office Country-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Home Office Country</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <lightning-combobox data-id="tm2HomeOfficeCountry" name="Home Office Country,Team Member 2 Details" value={tm2HomeOfficeCountry} options={options}
+                        onchange={handleFieldChanges}>
+                    </lightning-combobox>
+                </div>
+            </div>
+            <!--Team Member 2 Selected Other Country-->
+            <template if:true={is2TMOtherCountrySelected}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Home Office
+                            Country</b></label>
+                    <div class="slds-form-element__control">
+                        <lightning-input data-id="tm2OtherHomeOfficeCountry" name="Other Home Office Country,Team Member 2 Details" value={tm2OtherHomeOfficeCountry}
+                            onchange={handleFieldChanges}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+
+
+            <!--Team Member 2 Company Affiliation-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Company Affiliation</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <lightning-combobox data-id="tm2CompanyAffiliation" name="Company Affiliation,Team Member 2 Details" value={tm2CompanyAffiliation} options={CAOptions}
+                        onchange={handleFieldChanges}>
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <!--Team Member 2 Business Unit for Anglo American-->
+            <template if:true={is2AngloAmerican}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Business Unit</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <lightning-combobox data-id="tm2BusinessUnitAA" name="Business Unit,Team Member 2 Details" value={tm2BusinessUnitAA} options={BUAAOptions}
+                            onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+            </template>
+            <!--Team Member 2 Selected Other Business Unit for Anglo American-->
+            <template if:true={is2otherSelectedAA}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Business
+                            Unit</b></label>
+                    <div class="slds-form-element__control">
+                        <lightning-input data-id="tm2OtherBusinessUnitAA" name="Other Business Unit,Team Member 2 Details" value={tm2OtherBusinessUnitAA}
+                            onchange={handleFieldChanges}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+
+            <!--Team Member 2 Business Unit for DeBeers-->
+            <template if:true={is2DeBeers}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Business Unit</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <lightning-combobox data-id="tm2BusinessUnitDB" name="Business Unit,Team Member 2 Details" value={tm2BusinessUnitDB} options={BUDBOptions}
+                            onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+            </template>
+
+            <!--Team Member 2 Selected Other Business Unit for DeBeers-->
+            <template if:true={is2otherSelectedDB}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Business
+                            Unit</b></label>
+                    <div class="slds-form-element__control">
+                        <lightning-input data-id="tm2OtherBusinessUnitDB" name="Other Business Unit,Team Member 2 Details" value={tm2OtherBusinessUnitDB}
+                            onchange={handleFieldChanges}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+
+            <strong><label for="Email" style="font-size:120%;">Manager Information</label></strong>
+            <!--2 Manager Full Name-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Full Name</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm2MfullName" name="Full Name,Team Member 2 Details" class="slds-input input-element"
+                        value={tm2MfullName} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <!--2 Manager Work Email-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Work Email</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="email" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" data-id="tm2MworkEmailLM"
+                        name="Work Email,Team Member 2 Details" class="slds-input input-element" value={tm2MworkEmailLM}
+                        onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <br><br>
+            <!--Buttons-->
+            <div class="slds-float_left">
+                <lightning-button variant="neutral" label="Back" onclick={handleTM2Back}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Next" type="submit"
+                    onclick={handleTM2Next}></lightning-button>
+            </div-->
+            <div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSave4}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSaveAndContinue4}></lightning-button>
+            </div-->
+        </template>
+
+        <!--Team Member 3 Details-->
+        <template if:true={has3TeamMember}>
+            <!--Team Member 3-->
+            <div class="slds-form-element slds-form-element_stacked">
+                <strong><label class="slds-form-element__label" style="font-size:120%;">Team
+                        Member 3 Details<span style="color: #E45620;" title="This is required field.">
+                            *</span></label></strong>
+            </div>
+            <!--Team Member 3 First Name-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>First Name</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm3FirstName" name="First Name,Team Member 3 Details" class="slds-input input-element"
+                        value={tm3FirstName} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <!--Team Member 3 Surname-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Surname</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm3Surname" name="Surname,Team Member 3 Details" class="slds-input input-element"
+                        value={tm3Surname} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <!--Team Member 3 Job Title-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Job Title</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm3JobTitle" name="Job Title,Team Member 3 Details" class="slds-input input-element"
+                        value={tm3JobTitle} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+
+            <!--Team Member 3 Work Email-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Work Email</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="email" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" data-id="tm3WorkEmail" name="Work Email,Team Member 3 Details"
+                        class="slds-input input-element" value={tm3WorkEmail} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+
+            <!--Team Member 3 Home Office City-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Home Office City</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm3HomeOfficeCity" name="Home Office City,Team Member 3 Details"
+                        class="slds-input input-element" value={tm3HomeOfficeCity} onchange={handleFieldChanges}
+                        required />
+                </div>
+            </div>
+
+            <!--Team Member 3 Home Office Country-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Home Office Country</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <lightning-combobox data-id="tm3HomeOfficeCountry" name="Home Office Country,Team Member 3 Details" value={tm3HomeOfficeCountry} options={options}
+                        onchange={handleFieldChanges}>
+                    </lightning-combobox>
+                </div>
+            </div>
+            <!--Team Member 3 Selected Other Country-->
+            <template if:true={is3TMOtherCountrySelected}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Home Office
+                            Country</b></label>
+                    <div class="slds-form-element__control">
+                        <lightning-input data-id="tm3OtherHomeOfficeCountry" name="Other Home Office Country,Team Member 3 Details" value={tm3OtherHomeOfficeCountry}
+                            onchange={handleFieldChanges}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+            <!--Team Member 3 Company Affiliation-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Company Affiliation</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <lightning-combobox data-id="tm3CompanyAffiliation" name="Company Affiliation,Team Member 3 Details" value={tm3CompanyAffiliation} options={CAOptions}
+                        onchange={handleFieldChanges}>
+                    </lightning-combobox>
+                </div>
+            </div>
+            <!--Team Member 3 Business Unit for Anglo American-->
+            <template if:true={is3AngloAmerican}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Business Unit</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <lightning-combobox data-id="tm3BusinessUnitAA" name="Business Unit,Team Member 3 Details" value={tm3BusinessUnitAA} options={BUAAOptions}
+                            onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+            </template>
+            <!--Team Member 3 Selected Other Business Unit for Anglo American-->
+            <template if:true={is3otherSelectedAA}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Business
+                            Unit</b></label>
+                    <div class="slds-form-element__control">
+                        <lightning-input data-id="tm3OtherBusinessUnitAA" name="Other Business Unit,Team Member 3 Details" value={tm3OtherBusinessUnitAA}
+                            onchange={handleFieldChanges}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+
+            <!--Team Member 3 Business Unit for DeBeers-->
+            <template if:true={is3DeBeers}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Business Unit</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <lightning-combobox data-id="tm3BusinessUnitDB" name="Business Unit,Team Member 3 Details" value={tm3BusinessUnitDB} options={BUDBOptions}
+                            onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+            </template>
+
+            <!--Team Member 3 Selected Other Business Unit for Anglo American-->
+            <template if:true={is3otherSelectedDB}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Business
+                            Unit</b></label>
+                    <div class="slds-form-element__control">
+                        <lightning-input data-id="tm3OtherBusinessUnitDB" name="Other Business Unit,Team Member 3 Details" value={tm3OtherBusinessUnitDB}
+                            onchange={handleFieldChanges}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+
+            <strong><label for="Email" style="font-size:120%;">Manager Information</label></strong>
+            <!--3 Manager Full Name-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Full Name</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm3MfullName" name="Full Name,Team Member 3 Details" class="slds-input input-element"
+                        value={tm3MfullName} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <!--3 Manager Work Email-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Work Email</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="email" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" data-id="tm3MworkEmailLM"
+                        name="Work Email,Team Member 3 Details" class="slds-input input-element" value={tm3MworkEmailLM}
+                        onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <br><br>
+            <!--Buttons-->
+            <div class="slds-float_left">
+                <lightning-button variant="neutral" label="Back" onclick={handleTM3Back}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Next" type="submit"
+                    onclick={handleTM3Next} disabled={disabled}></lightning-button>
+            </div-->
+            <div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSave5}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSaveAndContinue5}></lightning-button>
+            </div-->
+        </template>
+        <!--Team Member 4 Details-->
+        <template if:true={has4TeamMember}>
+            <!--Team Member 4-->
+            <div class="slds-form-element slds-form-element_stacked">
+                <strong><label class="slds-form-element__label" style="font-size:120%;">Team
+                        Member 4 Details<span style="color: #E45620;" title="This is required field.">
+                            *</span></label></strong>
+            </div>
+            <!--Team Member 4 First Name-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>First Name</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm4FirstName" name="First Name,Team Member 4 Details" class="slds-input input-element"
+                        value={tm4FirstName} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <!--Team Member 4 Surname-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Surname</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm4Surname" name="Surname,Team Member 4 Details" class="slds-input input-element"
+                        value={tm4Surname} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <!--Team Member 4 Job Title-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Job Title</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm4JobTitle" name="Job Title,Team Member 4 Details" class="slds-input input-element"
+                        value={tm4JobTitle} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+
+            <!--Team Member 4 Work Email-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Work Email</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" data-id="tm4WorkEmail" name="Work Email,Team Member 4 Details"
+                        class="slds-input input-element" value={tm4WorkEmail} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+
+            <!--Team Member 4 Home Office City-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Home Office City</b><span
+                        style="color: #E45620;" title="This is required field.">
+                        *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm4HomeOfficeCity" name="Home Office City,Team Member 4 Details"
+                        class="slds-input input-element" value={tm4HomeOfficeCity} onchange={handleFieldChanges}
+                        required />
+                </div>
+            </div>
+
+            <!--Team Member 4 Home Office Country-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Home Office Country</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <lightning-combobox data-id="tm4HomeOfficeCountry" name="Home Office Country,Team Member 4 Details" value={tm4HomeOfficeCountry} options={options}
+                        onchange={handleFieldChanges}>
+                    </lightning-combobox>
+                </div>
+            </div>
+            <!--Team Member 4 Selected Other Country-->
+            <template if:true={is4TMOtherCountrySelected}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Home Office
+                            Country</b></label>
+                    <div class="slds-form-element__control">
+                        <lightning-input data-id="tm4OtherHomeOfficeCountry" name="Other Home Office Country,Team Member 4 Details" value={tm4OtherHomeOfficeCountry}
+                            onchange={handleFieldChanges}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+
+
+            <!--Team Member 4 Company Affiliation-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Company Affiliation</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <lightning-combobox data-id="tm4CompanyAffiliation" name="Company Affiliation,Team Member 4 Details" value={tm4CompanyAffiliation} options={CAOptions}
+                        onchange={handleFieldChanges}>
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <!--Team Member 4 Business Unit for Anglo American-->
+            <template if:true={is4AngloAmerican}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Business Unit</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <lightning-combobox data-id="tm4BusinessUnitAA" name="Business Unit,Team Member 4 Details" value={tm4BusinessUnitAA} options={BUAAOptions}
+                            onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+            </template>
+
+            <!--Team Member 4 Selected Other Business Unit for Anglo American-->
+            <template if:true={is4otherSelectedAA}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Business
+                            Unit</b></label>
+                    <div class="slds-form-element__control">
+                        <lightning-input data-id="tm4OtherBusinessUnitAA" name="Other Business Unit,Team Member 4 Details" value={tm4OtherBusinessUnitAA}
+                            onchange={handleFieldChanges}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+
+            <!--Team Member 4 Business Unit for DeBeers-->
+            <template if:true={is4DeBeers}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Business Unit</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <lightning-combobox data-id="tm4BusinessUnitDB" name="Business Unit,Team Member 4 Details" value={tm4BusinessUnitDB} options={BUDBOptions}
+                            onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+            </template>
+
+            <!--Team Member 4 Selected Other Business Unit for DeBeers-->
+            <template if:true={is4otherSelectedDB}>
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Business
+                            Unit</b></label>
+                    <div class="slds-form-element__control">
+                        <lightning-input data-id="tm4OtherBusinessUnitDB"  name="Other Business Unit,Team Member 4 Details" value={tm4OtherBusinessUnitDB}
+                            onchange={handleFieldChanges}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+
+            <strong><label for="Email" style="font-size:120%;">Manager Information</label></strong>
+            <!--4 Manager Full Name-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Full Name</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="text" data-id="tm4MfullName" name="Full Name,Team Member 4 Details" class="slds-input input-element"
+                        value={tm4MfullName} onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <!--4 Manager Work Email-->
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Work Email</b><span
+                        style="color: #E45620;" title="This is required field."> *</span></label>
+                <div class="slds-form-element__control">
+                    <input type="email" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" data-id="tm4MworkEmailLM"
+                        name="Work Email,Team Member 4 Details" class="slds-input input-element" value={tm4MworkEmailLM}
+                        onchange={handleFieldChanges} required />
+                </div>
+            </div>
+            <br><br>
+            <!--Buttons-->
+            <div class="slds-float_left">
+                <lightning-button variant="neutral" label="Back" onclick={handleTM4Back}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Next" type="submit"
+                    onclick={handleTM4Next} disabled={disabled}></lightning-button>
+            </div-->
+            <div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSave6}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSaveAndContinue6}></lightning-button>
+            </div-->
+        </template>
+        <!--Organisational Overview and Point of Contact-->
+        <template if:true={showNext1}>
+            <!--Line Manager Information Section-->
+            <div class="slds-form">
+                <strong>
+                    <h1 style="font-size:120%;">Organisational Overview and Point of Contact</h1>
+                </strong>
+                <p>In this section, we'd like to gather some information about your partner organisation. This will help
+                    the project selection committee understand the overall profile of your partner organisation, its
+                    beneficiaries and its impact on the community it serves.<br><br>
+
+                    <b>Please assure your partner organisation that this information will not be shared with third
+                        parties
+                        not related to the Ambassadors for Good Programme.</b></p><br><br>
+                <strong>
+                    <h1 style="font-size:100%;">Organisation Information</h1>
+                </strong>
+                <!--Full Organisation Name-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Organisation
+                            Name (full legal name): </b><span style="color: #E45620;" title="This is required field.">
+                            *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="fullOrgName" name="Organisation
+                        Name (full legal name),Organisation Information" class="slds-input input-element"
+                            value={fullOrgName} onchange={handleOrgNameFieldChanges} required />
+                    </div>
+                </div>
+                <!--Website URL-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Website URL</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="websiteURL" name="Website URL,Organisation Information" class="slds-input input-element"
+                            value={websiteURL} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+                <!--Is your partner organization a registered entity?-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Is your partner organization
+                            a
+                            registered entity?</b><span style="color: #E45620;" title="This is required field.">
+                            *</span></label>
+                    <div class="slds-form-element__control">
+                        <lightning-combobox data-id="isRegisteredEntity" name="Is your partner organization
+                        a
+                        registered entity?,Organisation Information" value={isRegisteredEntity}
+                            options={regEntityOptions} onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+                <!--Has this partner organisation participated in Ambassadors for Good before?-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Has this partner
+                            organisation
+                            participated in Ambassadors for Good before?</b><span style="color: #E45620;"
+                            title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <lightning-combobox data-id="participatedBefore" name="Has this partner
+                        organisation
+                        participated in Ambassadors for Good before?,Organisation Information" value={participatedBefore}
+                            options={participatedBeforeOptions} onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div><br/><br/>
+                <!--Organisation Address Information-->
+                <strong>
+                    <h2 class="slds-form-element__label" style="font-size:120%;"><b>Organisation Address
+                            Information<span style="color: #E45620;" title="This is required field."> *</span></b></h2>
+                </strong>
+                <!--Street-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Street</b></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="street" name="Street,Organisation Address Information" class="slds-input input-element"
+                            value={street} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+                <!--City/Town-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>City/Town</b></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="cityTown" name="City/Town,Organisation Address Information" class="slds-input input-element"
+                            value={cityTown} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+                <!--State/Province/Country-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label"
+                        for="horizontal-input-id-01"><b>State/Province/Country</b></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="stateProvCountry" name="State/Province/Country,Organisation Address Information"
+                            class="slds-input input-element" value={stateProvCountry} onchange={handleFieldChanges}
+                            required />
+                    </div>
+                </div>
+
+                <!--Postal Code-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Post Code</b></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="postCode" name="Post Code,Organisation Address Information" class="slds-input input-element"
+                            value={postCode} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+                <!--Country-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Country</b></label>
+                    <div class="slds-form-element__control">
+                        <lightning-combobox data-id="country" name="Country,Organisation Address Information" value={country} options={options}
+                            onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+                <!--Selected Other Country-->
+                <template if:true={isotherCountry}>
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other
+                                Country</b></label>
+                        <div class="slds-form-element__control">
+                            <lightning-input data-id="otherCountry" name="Other Country,Organisation Address Information" value={otherCountry} onchange={handleFieldChanges}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                </template>
+
+                <!--Partner Organisation Point of Contact Information-->
+                <strong>
+                    <h2 class="slds-form-element__label" style="font-size:120%;"><b>Partner Organisation Point of
+                            Contact Information</b>
+                    </h2>
+                </strong>
+                <p>Who is your main point of contact at the partner organisation?</p>
+                <!--First Name-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>First Name</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="firstNamePOC" name="First Name,Partner Organisation Point of Contact Information" class="slds-input input-element"
+                            value={firstNamePOC} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+                <!--Surname-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Surname</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="surnamePOC" name="Surname,Partner Organisation Point of Contact Information" class="slds-input input-element"
+                            value={surnamePOC} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+                <!--Title-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Title</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="titlePOC" name="Title,Partner Organisation Point of Contact Information" class="slds-input input-element"
+                            value={titlePOC} onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+
+                <!--Work Email-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Work Email</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="email" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" data-id="workEmailPOC"
+                            name=">Work Email,Partner Organisation Point of Contact Information" class="slds-input input-element" value={workEmailPOC}
+                            onchange={handleFieldChanges} required />
+                    </div>
+                </div>
+                <!--Phone Number-->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Phone Number</b><span
+                            style="color: #E45620;" title="This is required field."> *</span></label>
+                    <div class="slds-form-element__control">
+                        <input type="text" data-id="phoneNumberPOC" name="Phone Number,Partner Organisation Point of Contact Information"
+                            class="slds-input input-element" value={phoneNumberPOC} onchange={handleFieldChanges}
+                            required />
+                    </div>
+                </div>
+                <!--Organisation Mission and Vision-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label"><b>Organisation Mission and
+                                Vision (200 word count)</b><span style="color: #E45620;"
+                                title="This is required field.">
+                                *</span></label></strong>
+                    <p>Please summarise what your partner organisation’s mission is.</p>
+                    <!--lightning-helptext
+                        content="Please insert or describe your partner organisation’s mission and vision statements here.">
+                    </lightning-helptext-->
+                    <div class="slds-form-element__control">
+                        <lightning-textarea data-id="missionAndVision" name="Organisation Mission and Vision,Organisation Information" value={missionAndVision}
+                            onchange={handleFieldChanges}>
+                        </lightning-textarea>
+                    </div>
+                </div>
+                <!--Partner Organization Sector Activities-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label" for="horizontal-input-id-01"><b>Partner Organisation
+                                Sector
+                                Activities</b><span style="color: #E45620;" title="This is required field.">
+                                *</span></label></strong>
+                    <p>Please select the top three sectors that describe your partner organisation’s activities.</p>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__control">
+                            <lightning-checkbox-group data-id="sectorActivites" name="Partner Organization Sector Activities,Organisation Information" options={sectorActivitesOptions}
+                                value={sectorActivites} onchange={handleFieldChanges}></lightning-checkbox-group>
+                        </div>
+                    </div>
+                </div>
+                <!--Other Partner Organisation Sector Activities-->
+                <template if:true={otherSectorActivities}>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Partner
+                                Organisation
+                                Sector Activities</b></label>
+                        <div class="slds-form-element__control">
+                            <lightning-input data-id="otherSectorAC"  name="Other Partner Organisation Sector Activities,Organisation Information" value={otherSectorAC} onchange={handleFieldChanges}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                </template>
+                <br>
+                <!--Geographic Coverage-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label" for="horizontal-input-id-01"><b>Geographic
+                                Coverage (100 word count)</b><span style="color: #E45620;"
+                                title="This is required field.">
+                                *</span></label></strong>
+                    <p>Please describe your partner organisation’s geographical coverage. For example, in how many
+                        districts, cities and/or provinces does it have a presence in?</p>
+                    <!--lightning-helptext
+                        content="Please describe your partner organisation’s geographical coverage. For example, in how many districts, cities and/or provinces does it work?">
+                    </lightning-helptext-->
+                    <div class="slds-form-element__control">
+                        <lightning-textarea data-id="geographicCoverage"  name="Geographic Coverage,Organisation Information" maxlength="100"
+                            message-when-too-long="A maximum of 100 characters are allowed for Geographic Coverage."
+                            value={geographicCoverage} onchange={handleFieldChanges}>
+                        </lightning-textarea>
+                    </div>
+                </div>
+                <!--Target Beneficiaries-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label" for="horizontal-input-id-01"><b>Target
+                                Beneficiaries</b><span style="color: #E45620;" title="This is required field.">
+                                *</span></label></strong>
+                    <p>Your partner organisation’s target beneficiaries are the people it serves. They either consume
+                        its products and services or benefit directly from the activities of the organisation. Please
+                        select all that apply.</p>
+                    <!--lightning-helptext
+                        content="Your partner organisation’s target beneficiaries are the people it serves. They either consume its products and services or benefit directly from the activities of the organisation. Please select all that apply.">
+                    </lightning-helptext-->
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__control">
+                            <lightning-checkbox-group data-id="targetBeneficiaries"  name="Target Beneficiaries,Organisation Information" options={targetBeneOptions}
+                                value={targetBeneficiaries} onchange={handleFieldChanges}></lightning-checkbox-group>
+                            <!--lightning-dual-listbox class="slds-box" name="targetBeneficiaries"
+                                options={targetBeneOptions} value={targetBeneficiaries} onchange={handleFieldChanges}>
+                            </lightning-dual-listbox-->
+                        </div>
+                    </div>
+                </div>
+                <!--Other Target Beneficiaries-->
+                <template if:true={isOtherTargetBenef}>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Target
+                                Beneficiaries</b></label>
+                        <div class="slds-form-element__control">
+                            <lightning-input data-id="otherTargetBenef" name="Other Target Beneficiaries,Organisation Information" value={otherTargetBenef}
+                                onchange={handleFieldChanges}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                </template>
+                <br>
+                <!--Partner Organisation Communication-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label" for="horizontal-input-id-01"><b>Partner Organisation
+                                Communication</b><span style="color: #E45620;" title="This is required field.">
+                                *</span></label></strong>
+                    <p>Have you discussed the Ambassadors for Good project with your point of contact? Please select
+                        all that apply.</p>
+                    <!--lightning-helptext
+                        content="Have you discussed the Ambassadors for Good project with your point of contact? Please select all that apply.">
+                    </lightning-helptext-->
+                    <div class="slds-form-element__control">
+                        <lightning-checkbox-group data-id="partnerOrgComm" name="Partner Organisation Communication,Organisation Information" options={orgCommunOptions}
+                            value={partnerOrgComm} onchange={handleFieldChanges}></lightning-checkbox-group>
+                        <!--lightning-dual-listbox class="slds-box" name="partnerOrgComm" options={orgCommunOptions}
+                            value={partnerOrgComm} onchange={handleFieldChanges}>
+                        </lightning-dual-listbox-->
+                    </div>
+                </div>
+                <br>
+                <!--Level of Commitment-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label" for="horizontal-input-id-01"><b>Level of
+                                Commitment (200 word count)</b><span style="color: #E45620;"
+                                title="This is required field.">
+                                *</span></label></strong>
+                    <p>Please describe the level of commitment expressed by your partner organisation.  In your
+                        response, you should provide additional details regarding the resources and time commitments
+                        your partner organisation plans to contribute to the project. If you have not yet discussed the
+                        project plans with your partner organisation, please stop and set up a discussion with your
+                        partner organisation to ensure their level of commitment.</p>
+                    <!--lightning-helptext
+                        content="Please describe the level of commitment expressed by your partner organisation. Please provide additional details regarding the resources and level of commitment your partner organisation plans to contribute to the project. If you have not yet discussed the project plans with your partner organisation, please stop and set up a discussion with your partner organisation to ensure their level of commitment.">
+                    </lightning-helptext-->
+                    <div class="slds-form-element__control">
+                        <lightning-textarea data-id="levelOfCommitment" name="Level of Commitment,Organisation Information" maxlength="200"
+                            message-when-too-long="A maximum of 200 characters are allowed for Level of Commitment"
+                            value={levelOfCommitment} onchange={handleFieldChanges}>
+                        </lightning-textarea>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <!--Buttons-->
+            <div class="slds-float_left">
+                <lightning-button variant="neutral" label="Back" onclick={handleBack1}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Next" type="submit"
+                    onclick={handleNext2} disabled={disabled}></lightning-button>
+            </div-->
+            <div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSave7}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSaveAndContinue7}></lightning-button>
+            </div-->
+        </template>
+        <!--Proposed Project Information-->
+        <template if:true={showNext2}>
+            <div class="slds-form">
+                <strong>
+                    <h1 style="font-size:120%;">Proposed Project Information</h1>
+                </strong>
+                <p>This section of the application process gives you the opportunity to provide more information about
+                    the project you plan to deliver with your partner organisation. Please refer to the Ambassadors for
+                    Good Project Application Guide for help in completing these questions.<br><br>
+                    <b>Please note that if your project is a continuation of a previous Ambassadors for Good project,
+                        the selection committee does not have access to past project information.</b> Please provide the
+                    relevant context regarding past success and planned improvements.</p><br><br>
+                <!--Project Objective-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label" for="horizontal-input-id-01"><b>Project
+                                Objective (100 word count)</b><span style="color: #E45620;"
+                                title="This is required field.">
+                                *</span></label></strong>
+                    <p>In 2-4 sentences, please summarize the goal and objectives of your proposed project.</p>
+                    <div class="slds-form-element__control">
+                        <lightning-textarea data-id="projectObjective" name="Project Objective,Proposed Project Information" maxlength="100"
+                            message-when-too-long="A maximum of 100 characters are allowed for Project Objective."
+                            value={projectObjective} onchange={handleFieldChanges}>
+                        </lightning-textarea>
+                    </div>
+                </div>
+                <br>
+                <!--Project Background-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label" for="horizontal-input-id-01"><b>Project
+                                Background (200 word count)</b><span style="color: #E45620;"
+                                title="This is required field.">
+                                *</span></label></strong>
+                    <p>Please explain why your project is important to support. As part of your response, you should
+                        include any relevant context on the work your partner organisation has done to address this
+                        challenge or opportunity and explain why your project will be successful. If this is a
+                        continuation of a previous Ambassadors for Good project with your partner organisation, please
+                        include a short summary of your previous project and how, if at all, it relates to this year’s
+                        application.</p>
+                    <div class="slds-form-element__control">
+                        <lightning-textarea data-id="projectBackground" name="Project Background,Proposed Project Information" maxlength="200"
+                            message-when-too-long="A maximum of 200 characters are allowed for Project Background."
+                            value={projectBackground} onchange={handleFieldChanges}>
+                        </lightning-textarea>
+                    </div>
+                </div>
+                <br>
+                <!--Timeline & Activities to Obtain Objective-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label" for="horizontal-input-id-01"><b>Timeline &
+                                Activities to
+                                Obtain
+                                Objective (300 word count)</b><span style="color: #E45620;"
+                                title="This is required field.">*</span></label></strong>
+                    <p>Please list the activities your Ambassador for Good project team will undertake to accomplish
+                        the project objectives, including your plan for how you will collaborate with your partner
+                        organisation.</p>
+                    <div class="slds-form-element__control">
+                        <lightning-textarea data-id="activitesToObtain" name="Timeline & Activities to Obtain Objective,Proposed Project Information" maxlength="300"
+                            message-when-too-long="A maximum of 300 characters are allowed for Timeline & Activities to Obtain Objective."
+                            value={activitesToObtain} onchange={handleFieldChanges}>
+                        </lightning-textarea>
+                    </div>
+                </div>
+                <br>
+                <!--Project Type-->
+                <div class="slds-form-element slds-form-element_stacked">
+                    <strong><label class="slds-form-element__label" for="horizontal-input-id-01"><b>Project
+                                Type</b><span style="color: #E45620;" title="This is required field.">
+                                *</span></label></strong>
+                    <p>Please select one project type below that best describes your project activities or goals. If
+                        selected, your partner organisation will be asked to report on outcomes related to your below
+                        selection. Select only one.</p>
+                    <div class="slds-form-element__control">
+                        <lightning-checkbox-group data-id="projectType" name="Project Type,Proposed Project Information" options={projectTypeOptions} value={projectType}
+                            onchange={handleFieldChanges}></lightning-checkbox-group>
+                    </div>
+                </div>
+                <br>
+                <!--Corporate Social Investment-->
+                <div class="slds-form-element slds-p-top_medium">
+                    <strong><label class="slds-form-element__label" for="horizontal-input-id-01"><b>Corporate Social
+                                Investment</b><span style="color: #E45620;" title="This is required field.">
+                                *</span></label></strong>
+                    <p>Please select the Corporate Social Investment category that best aligns with your project
+                        objective</p>
+                    <div class="slds-form-element__control">
+                        <lightning-combobox data-id="corpSocialInvst" name="Corporate Social Investment,Proposed Project Information" value={corpSocialInvst}
+                            options={corpSocialInvstOptions} onchange={handleFieldChanges}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+                <br>
+                <!--Other Corporate Social Investment-->
+                <template if:true={isOtherSocialInvest}>
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label" for="horizontal-input-id-01"><b>Other Corporate Social
+                                Investment</b></label>
+                        <div class="slds-form-element__control">
+                            <lightning-input data-id="otherSocialInvest" name="Other Corporate Social Investment,Proposed Project Information" value={otherSocialInvest}
+                                onchange={handleFieldChanges}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                </template>
+                <br>
+                <!--Project Sustainability-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label" for="horizontal-input-id-01"><b>Project
+                                Sustainability (200 word count)</b><span style="color: #E45620;"
+                                title="This is required field.">
+                                *</span></label></strong>
+                    <p>How will the project be sustained after the completion of the Ambassadors for Good project, such
+                        as a handover plan noting how project information or outcomes will be shared with your partner
+                        organisation or a detailed work plan for how your Ambassadors for Good team accomplished the
+                        project activities for the organisations capacity development?</p>
+                    <div class="slds-form-element__control">
+                        <lightning-textarea data-id="projectSustainability" name="Project Sustainability,Proposed Project Information" maxlength="200" message-when-too-long="A maximum of 200 characters are allowed for Project
+                        Sustainability." value={projectSustainability} onchange={handleFieldChanges}>
+                        </lightning-textarea>
+                    </div>
+                </div>
+                <br>
+                <!--Team Skills-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label"><b>Team Skills (200 word count)</b><span
+                                style="color: #E45620;" title="This is required field."> *</span></label></strong>
+                    <p>Please specify the professional and/or personal skills that each Ambassadors for Good team
+                        member will contribute to accomplish the objectives and activities of the project. Be specific
+                        about what skills each individual team member will bring to the project and what new skills they
+                        seek to develop.</p>
+                    <div class="slds-form-element__control">
+                        <lightning-textarea data-id="teamSkills" name="Team Skills,Proposed Project Information" value={teamSkills} maxlength="200"
+                            message-when-too-long="A maximum of 200 characters are allowed for Team Skills."
+                            onchange={handleFieldChanges}>
+                        </lightning-textarea>
+                    </div>
+                </div>
+                <br>
+                <!--Level of Effort-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label"><b>Level of Effort (200 word count)</b><span
+                                style="color: #E45620;" title="This is required field."> *</span></label></strong>
+                    <p>How will your team work together to accomplish the project, such as roles and
+                        responsibilities?<br>How will you work together on the project as an Ambassadors for Good team
+                        and as individuals?</p>
+                    <div class="slds-form-element__control">
+                        <lightning-textarea data-id="levelOfEffort" name="Level of Effort,Proposed Project Information" value={levelOfEffort} maxlength="200"
+                            message-when-too-long="A maximum of 200 characters are allowed for Level of Effort."
+                            onchange={handleFieldChanges}>
+                        </lightning-textarea>
+                    </div>
+                </div>
+                <br>
+                <!--Team Diversity-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label"><b>Team Diversity (200 word count)</b><span
+                                style="color: #E45620;" title="This is required field."> *</span></label></strong>
+                    <p>What makes your team diverse, multidisciplinary, and unique? How will this diversity contribute
+                        to accomplishing the objective of the project? Note that team diversity includes diverse
+                        experiences, personal and professional backgrounds, seniority, function, and cultural diversity.
+                    </p>
+                    <div class="slds-form-element__control">
+                        <lightning-textarea data-id="teamDiversity" name="Team Diversity,Proposed Project Information" value={teamDiversity} maxlength="200"
+                            message-when-too-long="A maximum of 200 characters are allowed for Team Diversity."
+                            onchange={handleFieldChanges}>
+                        </lightning-textarea>
+                    </div>
+                </div>
+                <br>
+                <!--Project Beneficiaries-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label"><b>Project Beneficiaries (200 word count)</b><span
+                                style="color: #E45620;" title="This is required field."> *</span></label></strong>
+                    <p>Please describe the people and communities that will be impacted by your project, both directly
+                        and indirectly.</p>
+                    <div class="slds-form-element__control">
+                        <lightning-textarea data-id="projectBeneficiaries" name="Project Beneficiaries,Proposed Project Information" maxlength="200"
+                            message-when-too-long="A maximum of 200 characters are allowed for Project Beneficiaries."
+                            value={projectBeneficiaries} onchange={handleFieldChanges}></lightning-textarea>
+                    </div>
+                </div>
+                <br>
+                <!--Alignment with Sustainable Mining Plan or Strategic Pillars-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label"><b>Alignment with Sustainable Mining Plan or
+                                Strategic
+                                Pillars (200 word count )</b><span style="color: #E45620;"
+                                title="This is required field.">
+                                *</span></label></strong>
+                    <p>Please describe how your project and the work of your partner organisation align with the Anglo
+                        American Sustainable Mining Plan and/or the De Beers Group Building Forever 2030 Goals.</p>
+                    <!--lightning-helptext
+                        content="Please describe the people and communities that will be impacted by your project, both directly and indirectly.">
+                    </lightning-helptext-->
+                    <div class="slds-form-element__control">
+                        <lightning-textarea data-id="alignMiningPlan" name="Alignment with Sustainable Mining Plan or Strategic Pillars,Proposed Project Information" maxlength="200"
+                            message-when-too-long="A maximum of 200 characters are allowed for Alignment with Sustainable Mining Plan or Strategic Pillars."
+                            value={alignMiningPlan} onchange={handleFieldChanges}></lightning-textarea>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <div class="slds-float_left">
+                <lightning-button variant="neutral" label="Back" onclick={handleBack2}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Next" type="submit"
+                    onclick={handleNext3} disabled={disabled}></lightning-button>
+            </div-->
+            <div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSave8}></lightning-button>
+            </div>
+            <!--div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save & Continue" type="submit"
+                    onclick={handleSaveAndContinue8}></lightning-button>
+            </div-->
+        </template>
+        <!--Grant Use-->
+        <template if:true={showNext3}>
+            <div class="slds-form">
+                <!--Grant Use-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label" for="horizontal-input-id-01"><b>Grant Use</b><span
+                                style="color: #E45620;" title="This is required field."> *</span></label></strong>
+                    <p>Is grant funding required for your Ambassadors for Good project?</p>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__control">
+                            <lightning-combobox data-id="grantUse" name="Grant Use,Grant Information" value={grantUse} options={grantUseOptions}
+                                onchange={handleFieldChanges}>
+                            </lightning-combobox>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <!--If yes, how much funding will your organisation be requesting for your project?-->
+                <template if:true={hasGrant}>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label"><b>If yes, how much funding will your organisation be
+                                requesting for your project?</b><span style="color: #E45620;"
+                                title="This is required field.">
+                                *</span></label>
+                        <div class="slds-form-element__control">
+                            <input type="text" data-id="howMuchFunding" name="If yes, how much funding will your organisation be requesting for your project?,Grant Information"
+                                class="slds-input input-element" value={howMuchFunding} onchange={handleFieldChanges}
+                                required />
+                        </div>
+                    </div>
+                </template>
+                <br>
+                <!--Grant Narrative-->
+                <div class="slds-form-element">
+                    <strong><label class="slds-form-element__label"><b>Grant Narrative (200 word count limit)</b><span
+                                style="color: #E45620;" title="This is required field."> *</span></label></strong>
+                    <p>(If grant is required) Please provide a short narrative describing the costs the grant will
+                        cover and how the grant will complement the skills-based project activities. We encourage you to
+                        align your answer for this question with your partner organisation’s grant request.<br>
+                        (If no grant is required) Please describe the resources available to ensure the successful
+                        delivery of this project (for example, partner organisation staff time or existing partner
+                        organisation resources that will be available to contribute to the success of the project).</p>
+                    <div class="slds-form-element__control">
+                        <lightning-textarea data-id="grantNarrative" name="Grant Narrative,Grant Information" maxlength="200"
+                            message-when-too-long="A maximum of 200 characters are allowed for Grant Narrative."
+                            value={grantNarrative} onchange={handleFieldChanges}>
+                        </lightning-textarea>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <div class="slds-float_left">
+                <lightning-button variant="neutral" label="Back" onclick={handleBack3}></lightning-button>
+            </div>
+            <div class="slds-float_right">
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Review Application" type="submit"
+                    onclick={handleSubmit}></lightning-button>
+            </div>
+        </template>
+    </lightning-quick-action-panel>
+</template>

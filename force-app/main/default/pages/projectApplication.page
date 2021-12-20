@@ -1,0 +1,15 @@
+<apex:page standardController="Project_Application__c" standardStylesheets="true"  >
+    <apex:includeLightning />    
+    <div id="LightningComponentid" />   
+<!-- the Id of div tag which will be used to render your LWC component  -->
+    <script>
+        $Lightning.use("c:projectApplicationAura", function() {
+            $Lightning.createComponent("c:projectApplication",
+            { 
+            },
+            "LightningComponentid", // the Id of div tag where your component will be rendered
+            function(cmp) {
+            });
+        });
+    </script>
+</apex:page>
